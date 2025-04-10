@@ -6,15 +6,17 @@ const initialGameBoard =  [
   [null, null, null],
 ];
 
-export default function GameBoard() {
+export default function GameBoard( { onSelectCell, player } ) {
   const [currentGameBoard, setGameBoard] = useState(initialGameBoard);
 
   const handleClickCell = (rowId, colId) => {
     setGameBoard(prevGameBoard => {
       const updatedBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
-      updatedBoard[rowId][colId] = '';
+      updatedBoard[rowId][colId] = player;
       return updatedBoard;
-    })
+    });
+
+    onSelectCell();
   }
 
   return (
