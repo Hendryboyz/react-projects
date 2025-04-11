@@ -1,4 +1,4 @@
-const initialGameBoard =  [
+const INITIAL_GAME_BOARD =  [
   [null, null, null],
   [null, null, null],
   [null, null, null],
@@ -6,7 +6,7 @@ const initialGameBoard =  [
 
 
 export const computeGameBoard = (turns) => {
-  let gameBoard = [ ...initialGameBoard.map( line => [ ...line ] ) ];
+  let gameBoard = [ ...INITIAL_GAME_BOARD.map( line => [ ...line ] ) ];
   for (const turn of turns) {
     const { square, player } = turn;
     const { row, col }  = square;
