@@ -14,6 +14,7 @@ function App() {
   const [investments, setInvestments] = useState(initialInvestments);
   const handleChange = (inputIdentifier, newValue) => {
     setInvestments((prevValue) => {
+      // input value always be string
       return { ...prevValue, [inputIdentifier]: +newValue };
     })
   };
