@@ -44,11 +44,11 @@ const StyledHeader = styled.header`
 
 export default function Header() {
   return (
-    <header className="flex flex-col items-center justify-center my-8">
+    <header className="flex flex-col items-center justify-center my-8 md:mb-16">
       <img src={logo} alt="A canvas" className="w-44 h-44 mb-8 object-contain" />
-      <h1 className="text-2xl font-semibold uppercase tracking-widest text-center text-[#9a3412] m-0 font-title">ReactArt</h1>
+      <h1 className="text-2xl md:text-4xl font-semibold uppercase tracking-widest text-center text-[#9a3412] m-0 font-title">ReactArt</h1>
       {/*<p className={classnames.paragraph}>A community of artists and art-lovers.</p>*/}
-      <p className="m-0 text-center text-[#a39191]">A community of artists and art-lovers.</p>
+      <p className="m-0 text-center text-stone-500">A community of artists and art-lovers.</p>
     </header>
   );
 }
