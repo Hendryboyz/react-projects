@@ -1,12 +1,13 @@
 import {forwardRef, useImperativeHandle, useRef} from 'react';
 
-function ResultModal({ref, result, targetTime}) {
+function ResultModal({ref, targetTime, remainingTime, onRestart}) {
+  const isUserLost = remainingTime <= 0;
   return (
     <dialog ref={ref} className="result-modal">
-      <h2>You {result}</h2>
+      {isUserLost && <h2>You Lost!</h2>}
       <p>The target time was <strong>{targetTime} seconds</strong>.</p>
       <p>You stopped the timer <strong>with X seconds left</strong>.</p>
-      <form method="dialog">
+      <form method="dialog" onSubmit={onRestart}>
         <button>Close</button>
       </form>
     </dialog>
@@ -14,8 +15,11 @@ function ResultModal({ref, result, targetTime}) {
 }
 
 // In React 19, forwardRef is no longer necessary. Pass ref as a prop instead.
-const OlderResultModal = forwardRef(({result, targetTime}, ref) => {
+const OlderResultModal = forwardRef(({targetTimeSecs, remainingTime, onRestart}, ref) => {
   const dialog = useRef(undefined);
+  const isUserLost = remainingTime <= 0;
+  const formattedRemainingTime = (remainingTime / 1000).toFixed(2);
+
   useImperativeHandle(ref, () => {
     return {
       open() {
@@ -23,12 +27,15 @@ const OlderResultModal = forwardRef(({result, targetTime}, ref) => {
       },
     };
   }, []);
+
+  const score = Math.round((1 - remainingTime / (targetTimeSecs * 1000)) * 100);
   return (
-    <dialog ref={dialog} className="result-modal">
-      <h2>You {result}</h2>
-      <p>The target time was <strong>{targetTime} seconds</strong>.</p>
-      <p>You stopped the timer <strong>with X seconds left</strong>.</p>
-      <form method="dialog">
+    <dialog ref={dialog} className="result-modal" onClose={onRestart}>
+      {isUserLost && <h2>You Lost</h2>}
+      {!isUserLost && <h2>You success, score: {score}</h2>}
+      <p>The target time was <strong>{targetTimeSecs} seconds</strong>.</p>
+      <p>You stopped the timer with <strong>{formattedRemainingTime} seconds left</strong>.</p>
+      <form method="dialog" onSubmit={onRestart}>
         <button>Close</button>
       </form>
     </dialog>
