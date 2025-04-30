@@ -10,9 +10,9 @@ function App() {
   const handleCancelNewProject = () => { setIsProjectCreating(false); };
 
   return (
-    <div className="h-svh flex">
+    <div className="h-screen flex">
       <SideBar onNewProject={handleNewProject} />
-      <section className="w-4/5 flex flex-col justify-center items-center">
+      <section className="w-4/5 m-auto">
         {!isProjectCreating && <NoProject onNewProject={handleNewProject} />}
         {isProjectCreating && <NewProject onCancelNewProject={handleCancelNewProject} />}
       </section>
