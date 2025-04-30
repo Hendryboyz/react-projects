@@ -5,16 +5,30 @@ import NewProject from "./components/NewProject.jsx";
 
 function App() {
   const [isProjectCreating, setIsProjectCreating] = useState(false);
+  const [projects, setProjects] = useState([]);
 
   const handleNewProject = () => { setIsProjectCreating(true); };
-  const handleCancelNewProject = () => { setIsProjectCreating(false); };
+  const closeNewProject = () => { setIsProjectCreating(false); };
+
+  const handleNewProjectCreate = (title, description, dueDate) => {
+    setProjects((pastProjects) => [...pastProjects, {
+      title,
+      description,
+      dueDate,
+    }]);
+    closeNewProject();
+  };
 
   return (
     <div className="h-screen flex">
-      <SideBar onNewProject={handleNewProject} />
+      <SideBar onNewProject={handleNewProject} projects={projects} />
       <section className="w-4/5 m-auto">
         {!isProjectCreating && <NoProject onNewProject={handleNewProject} />}
-        {isProjectCreating && <NewProject onCancelNewProject={handleCancelNewProject} />}
+        {isProjectCreating &&
+          <NewProject
+            onCancelNewProject={closeNewProject}
+            onCreateNewProject={handleNewProjectCreate}
+          />}
       </section>
     </div>
 );
