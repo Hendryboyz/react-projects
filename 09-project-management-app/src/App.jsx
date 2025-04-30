@@ -20,7 +20,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen flex">
+    <main className="h-screen mt-8 flex">
       <SideBar onNewProject={handleNewProject} projects={projects} />
       <section className="w-4/5 m-auto">
         {!isProjectCreating && <NoProject onNewProject={handleNewProject} />}
@@ -30,7 +30,7 @@ function App() {
             onCreateNewProject={handleNewProjectCreate}
           />}
       </section>
-    </div>
+    </main>
 );
 }
 
