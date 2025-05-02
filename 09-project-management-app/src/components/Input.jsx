@@ -1,14 +1,14 @@
 import {forwardRef} from 'react';
-const Input = function({id, label, type, ref}) {
-  const inputClass = "bg-gray-200 px-1 pt-2 pb-1 border-b-2 border-b-gray-300 focus-visible:outline-0 focus:border-b-gray-500";
+const Input = function({id, label, type, ref, ...props}) {
+  const inputClass = "w-full bg-stone-200 p-1 rounded-sm text-stone-600 border-stone-300 border-b-2 focus-visible:outline-0 focus:border-stone-600";
   return (
-    <div className="w-3/5 flex flex-col mb-3">
-      <label className="uppercase text-gray-600 font-bold mb-2" htmlFor={id}>{label}</label>
+    <p className="flex flex-col my-4 gap-1">
+      <label className="text-sm uppercase text-stone-500 font-bold" htmlFor={id}>{label}</label>
       {type === "textarea" ?
-        <textarea ref={ref} className={inputClass} id={id}></textarea> :
-        <input ref={ref} type={type} className={inputClass} id={id}></input>
+        <textarea ref={ref} className={inputClass} id={id} {...props}></textarea> :
+        <input ref={ref} type={type} className={inputClass} id={id} {...props}></input>
       }
-    </div>
+    </p>
   );
 }
 
