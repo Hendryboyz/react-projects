@@ -1,5 +1,6 @@
 import {forwardRef} from 'react';
-const Input = function({id, label, type, ref, ...props}) {
+
+const Input = forwardRef(function({id, label, type, ...props}, ref) {
   const inputClass = "w-full bg-stone-200 p-1 rounded-sm text-stone-600 border-stone-300 border-b-2 focus-visible:outline-0 focus:border-stone-600";
   return (
     <p className="flex flex-col my-4 gap-1">
@@ -10,6 +11,6 @@ const Input = function({id, label, type, ref, ...props}) {
       }
     </p>
   );
-}
+});
 
 export default Input;
