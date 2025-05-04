@@ -1,18 +1,30 @@
 import {useRef} from "react";
+import {object, string, date} from 'yup';
 import Button from "./Button.jsx";
 import Input from "./Input.jsx";
+
+const projectSchema = object({
+  title: string().required().max(64),
+  description: string().required().max(250),
+  dueDate: date().required(),
+});
 
 export default function({ onCancelNewProject, onCreateNewProject }) {
   const title = useRef(undefined);
   const description = useRef(undefined);
   const dueDate = useRef(undefined);
+
   return (
     <form className="w-[35rem] mt-16" onSubmit={() => {
-      onCreateNewProject(
-        title.current.value,
-        description.current.value,
-        dueDate.current.value,
-      );
+      const newProject = {
+        title: title.current?.value,
+        description: description.current?.value,
+        dueDate: dueDate.current?.value,
+      };
+
+      const isValidInputs = projectSchema.isValidSync(newProject, {});
+
+      onCreateNewProject(newProject);
     }}>
       <menu className="flex justify-end items-center my-4 gap-4">
         <Button onClick={onCancelNewProject} customClass="text-stone-800 hover:text-stone-950">Cancel</Button>

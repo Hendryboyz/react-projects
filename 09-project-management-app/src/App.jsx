@@ -2,33 +2,50 @@ import {useState} from "react";
 import NoProject from "./components/NoProject.jsx";
 import SideBar from "./components/SideBar.jsx";
 import NewProject from "./components/NewProject.jsx";
+import Project from "./components/Project.jsx";
+import newProject from "./components/NewProject.jsx";
 
 function App() {
-  const [isProjectCreating, setIsProjectCreating] = useState(false);
-  const [projects, setProjects] = useState([]);
+  const [projectsState, setProjectsState] = useState({
+    selectedProjectId: undefined,
+    projects: [],
+  });
 
-  const handleNewProject = () => { setIsProjectCreating(true); };
-  const closeNewProject = () => { setIsProjectCreating(false); };
+  const handleNewProject = () => {
+    setProjectsState(prevState => ({
+      selectedProjectId: null,
+      projects: [...prevState.projects]
+    }));
+  };
 
-  const handleNewProjectCreate = (title, description, dueDate) => {
-    setProjects((pastProjects) => [...pastProjects, {
-      title,
-      description,
-      dueDate,
-    }]);
-    closeNewProject();
+  const closeNewProject = () => {
+    setProjectsState(prevState => ({
+      selectedProjectId: undefined,
+      projects: [...prevState.projects]
+    }));
+  };
+
+  const handleNewProjectCreate = (newProject) => {
+    setProjectsState(prevState => ({
+      selectedProjectId: undefined,
+      projects: [...prevState.projects, {
+        ...newProject,
+        id: Math.random(),
+      }],
+    }));
   };
 
   return (
     <main className="h-screen mt-8 flex gap-8">
-      <SideBar onNewProject={handleNewProject} projects={projects} />
+      <SideBar onNewProject={handleNewProject} projects={projectsState.projects} />
       <section className="m-auto">
-        {!isProjectCreating && <NoProject onNewProject={handleNewProject} />}
-        {isProjectCreating &&
+        {projectsState.selectedProjectId === undefined && <NoProject onNewProject={handleNewProject} />}
+        {projectsState.selectedProjectId === null &&
           <NewProject
             onCancelNewProject={closeNewProject}
             onCreateNewProject={handleNewProjectCreate}
           />}
+        {projectsState.selectedProjectId && <Project project={projectsState.projects[projectsState.selectedProjectId]} />}
       </section>
     </main>
 );
