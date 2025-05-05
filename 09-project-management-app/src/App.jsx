@@ -3,30 +3,31 @@ import NoProject from "./components/NoProject.jsx";
 import SideBar from "./components/SideBar.jsx";
 import NewProject from "./components/NewProject.jsx";
 import Project from "./components/Project.jsx";
-import newProject from "./components/NewProject.jsx";
 
 function App() {
   const [projectsState, setProjectsState] = useState({
     selectedProjectId: undefined,
     projects: [],
+    tasks: [],
   });
 
   const handleNewProject = () => {
     setProjectsState(prevState => ({
+      ...prevState,
       selectedProjectId: null,
-      projects: [...prevState.projects]
     }));
   };
 
   const handleCloseNewProject = () => {
     setProjectsState(prevState => ({
+      ...prevState,
       selectedProjectId: undefined,
-      projects: [...prevState.projects]
     }));
   };
 
   const handleNewProjectCreate = (newProject) => {
     setProjectsState(prevState => ({
+      ...prevState,
       selectedProjectId: undefined,
       projects: [...prevState.projects, {
         ...newProject,
@@ -37,17 +38,37 @@ function App() {
 
   const handleSelectProject = (projectId) => {
     setProjectsState(prevState => ({
+      ...prevState,
       selectedProjectId: projectId,
-      projects: [...prevState.projects]
     }));
   };
 
   const handleDeleteProject = () => {
     setProjectsState(prevState => ({
+      ...prevState,
       selectedProjectId: undefined,
       projects: prevState.projects.filter((project) => project.id !== prevState.selectedProjectId),
     }));
   };
+
+  const handleAddTask = (content) => {
+    setProjectsState(prevState => ({
+      ...prevState,
+      tasks: [...prevState.tasks, {
+        id: Math.random(),
+        projectId: prevState.selectedProjectId,
+        text: content,
+      }],
+    }));
+  };
+
+  const handleDeleteTask = (deletingTaskId) => {
+    setProjectsState(prevState => ({
+      ...prevState,
+      tasks: prevState.tasks.filter((task) => task.id !== deletingTaskId),
+    }));
+  };
+
   return (
     <main className="h-screen mt-8 flex gap-8">
       <SideBar
@@ -64,8 +85,11 @@ function App() {
             onCreateNewProject={handleNewProjectCreate}
           />}
         {projectsState.selectedProjectId && <Project
-          onDelete={handleDeleteProject}
           project={projectsState.projects.find(project => project.id === projectsState.selectedProjectId)}
+          tasks={projectsState.tasks.filter((task) => task.projectId === projectsState.selectedProjectId)}
+          onDelete={handleDeleteProject}
+          onAddTask={handleAddTask}
+          onDeleteTask={handleDeleteTask}
         />}
       </section>
     </main>

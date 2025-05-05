@@ -20,7 +20,6 @@ export default function({
           const {id, title} = project;
           let cssClasses = `w-full text-left rounded-sm text-base px-2 py-1 my-1 ${hoverProjectClass}`;
           const isSelected = id === selectedProjectId;
-          console.log(isSelected, id, selectedProjectId);
           if (isSelected) {
             cssClasses += " bg-stone-800 text-stone-200";
           } else {
