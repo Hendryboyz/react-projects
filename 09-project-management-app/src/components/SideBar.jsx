@@ -1,6 +1,11 @@
 import Button from "./Button.jsx";
 
-export default function({ onNewProject, projects }) {
+export default function({
+  onNewProject,
+  onSelectProject,
+  projects,
+  selectedProjectId,
+}) {
   const hoverProjectClass = "hover:text-stone-200 hover:bg-stone-800 hover:cursor-pointer";
   const hoverButtonClass = "hover:bg-stone-600 hover:text-stone-100";
   return (
@@ -11,10 +16,26 @@ export default function({ onNewProject, projects }) {
         + Add Project
       </Button>
       <menu className="mt-8">
-        {projects.map(project => (
-        <li key={project.id}>
-          <button className={`w-full text-left rounded-sm text-base px-2 py-1 my-1 text-stone-400  ${hoverProjectClass}`}>{project.title}</button>
-        </li>))}
+        {projects.map(project => {
+          const {id, title} = project;
+          let cssClasses = `w-full text-left rounded-sm text-base px-2 py-1 my-1 ${hoverProjectClass}`;
+          const isSelected = id === selectedProjectId;
+          if (isSelected) {
+            cssClasses += " bg-stone-800 text-stone-200";
+          } else {
+            cssClasses += " bg-stone-800 text-stone-400";
+          }
+          return (
+            <li key={id}>
+              <button
+                onClick={() => onSelectProject(id)}
+                className={cssClasses}
+              >
+                {title}
+              </button>
+            </li>
+          );
+        })}
       </menu>
     </aside>
   );

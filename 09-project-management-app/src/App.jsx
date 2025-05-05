@@ -18,7 +18,7 @@ function App() {
     }));
   };
 
-  const closeNewProject = () => {
+  const handleCloseNewProject = () => {
     setProjectsState(prevState => ({
       selectedProjectId: undefined,
       projects: [...prevState.projects]
@@ -35,17 +35,31 @@ function App() {
     }));
   };
 
+  const handleSelectProject = (projectId) => {
+    setProjectsState(prevState => ({
+      selectedProjectId: projectId,
+      projects: [...prevState.projects]
+    }));
+  };
+
+  const handleDeleteProject = (projectId) => {};
   return (
     <main className="h-screen mt-8 flex gap-8">
-      <SideBar onNewProject={handleNewProject} projects={projectsState.projects} />
+      <SideBar
+        onNewProject={handleNewProject}
+        onSelectProject={handleSelectProject}
+        projects={projectsState.projects}
+      />
       <section className="m-auto">
         {projectsState.selectedProjectId === undefined && <NoProject onNewProject={handleNewProject} />}
         {projectsState.selectedProjectId === null &&
           <NewProject
-            onCancelNewProject={closeNewProject}
+            onCancelNewProject={handleCloseNewProject}
             onCreateNewProject={handleNewProjectCreate}
           />}
-        {projectsState.selectedProjectId && <Project project={projectsState.projects[projectsState.selectedProjectId]} />}
+        {projectsState.selectedProjectId && <Project
+          project={projectsState.projects.find(project => project.id === projectsState.selectedProjectId)}
+        />}
       </section>
     </main>
 );
