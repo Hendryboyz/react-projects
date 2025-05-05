@@ -54,8 +54,9 @@ function App() {
         onNewProject={handleNewProject}
         onSelectProject={handleSelectProject}
         projects={projectsState.projects}
+        selectedProjectId={projectsState.selectedProjectId}
       />
-      <section className="m-auto">
+      <section className="mx-auto">
         {projectsState.selectedProjectId === undefined && <NoProject onNewProject={handleNewProject} />}
         {projectsState.selectedProjectId === null &&
           <NewProject
