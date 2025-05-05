@@ -1,7 +1,7 @@
 import { DUMMY_PRODUCTS } from '../dummy-products.js';
 import Product from './Product.jsx';
 
-const Shop = function ({ onAddItemToCart }) {
+const Shop = function () {
   return (
     <section id="shop">
       <h2>Elegant Clothing For Everyone</h2>
@@ -9,7 +9,7 @@ const Shop = function ({ onAddItemToCart }) {
       <ul id="products">
         {DUMMY_PRODUCTS.map((product) => (
           <li key={product.id}>
-            <Product {...product} onAddToCart={onAddItemToCart} />
+            <Product {...product}  />
           </li>
         ))}
       </ul>
@@ -30,4 +30,4 @@ const CompositionShop = function ({ children }) {
   );
 }
 
-export default CompositionShop;
+export default Shop;
