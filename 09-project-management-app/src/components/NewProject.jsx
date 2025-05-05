@@ -24,7 +24,6 @@ export default function({ onCancelNewProject, onCreateNewProject }) {
     };
 
     if (!projectSchema.isValidSync(newProject, {})) {
-      console.error("Invalid project");
       errorModal.current?.open();
       return;
     }
