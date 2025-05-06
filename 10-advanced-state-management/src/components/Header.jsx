@@ -28,7 +28,6 @@ export default function Header() {
     <>
       <CartModal
         ref={modal}
-        cartItems={cart.items}
         title="Your Cart"
         actions={modalActions}
       />
