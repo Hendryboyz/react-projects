@@ -1,18 +1,21 @@
 import Button from "./Button.jsx";
+import {useContext} from "react";
+import {ProjectContext} from "../store/project-context.jsx";
 
-export default function({
-  onNewProject,
-  onSelectProject,
-  projects,
-  selectedProjectId,
-}) {
+export default function() {
+  const {
+    selectedProjectId,
+    projects,
+    handleNewProject,
+    handleSelectProject,
+  } = useContext(ProjectContext);
   const hoverProjectClass = "hover:text-stone-200 hover:bg-stone-800 hover:cursor-pointer";
   const hoverButtonClass = "hover:bg-stone-600 hover:text-stone-100";
   return (
     <aside className={`bg-black text-stone-50 rounded-r-lg px-8 py-16 w-1/3 md:w-72`}>
       <h2 className="uppercase font-bold md:text-2xl mb-8">Your Projects</h2>
       <Button customClass={`bg-stone-700 text-stone-400 ${hoverButtonClass}`}
-              onClick={onNewProject}>
+              onClick={handleNewProject}>
         + Add Project
       </Button>
       <menu className="mt-8">
@@ -28,7 +31,7 @@ export default function({
           return (
             <li key={id}>
               <button
-                onClick={() => onSelectProject(id)}
+                onClick={() => handleSelectProject(id)}
                 className={cssClasses}
               >
                 {title}

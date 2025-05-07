@@ -1,8 +1,9 @@
-import {useRef} from "react";
+import {useContext, useRef} from "react";
 import {object, string, date} from 'yup';
 import Button from "./Button.jsx";
 import Input from "./Input.jsx";
 import Modal from "./Modal.jsx";
+import {ProjectContext} from "../store/project-context.jsx";
 
 const projectSchema = object({
   title: string().required().max(64),
@@ -10,7 +11,9 @@ const projectSchema = object({
   dueDate: date().required(),
 });
 
-export default function({ onCancelNewProject, onCreateNewProject }) {
+export default function() {
+  const { handleNewProjectCreate, handleCloseNewProject } = useContext(ProjectContext);
+
   const title = useRef(undefined);
   const description = useRef(undefined);
   const dueDate = useRef(undefined);
@@ -28,7 +31,7 @@ export default function({ onCancelNewProject, onCreateNewProject }) {
       return;
     }
 
-    onCreateNewProject(newProject);
+    handleNewProjectCreate(newProject);
   };
 
   return (
@@ -40,7 +43,7 @@ export default function({ onCancelNewProject, onCreateNewProject }) {
       </Modal>
       <div className="w-[35rem] mt-16">
         <menu className="flex justify-end items-center my-4 gap-4">
-          <Button onClick={onCancelNewProject} customClass="text-stone-800 hover:text-stone-950">Cancel</Button>
+          <Button onClick={handleCloseNewProject} customClass="text-stone-800 hover:text-stone-950">Cancel</Button>
           <Button onClick={onProjectSave} customClass="bg-stone-800 text-stone-50 hover:bg-stone-950">Save</Button>
         </menu>
         <div>
