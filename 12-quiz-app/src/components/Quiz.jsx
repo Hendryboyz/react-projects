@@ -16,7 +16,7 @@ export default function Quiz() {
 
   const isQuizCompleted = activeQuestionIndex === QUESTIONS.length;
   if (isQuizCompleted) {
-    return (<QuizComplete />);
+    return (<QuizComplete pickedAnswers={pickedAnswers} />);
   }
 
   return (
