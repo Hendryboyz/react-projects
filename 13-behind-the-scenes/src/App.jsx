@@ -10,8 +10,6 @@ function App() {
 
   const [chosenCount, setChosenCount] = useState(0);
 
-
-
   function handleSetClick(newCount) {
     setChosenCount(newCount);
   }
