@@ -1,6 +1,7 @@
 import { log } from '../../log.js';
 import {memo} from "react";
 
+//
 const IconButton =  memo(function ({ children, icon, ...props }) {
   log('<IconButton /> rendered', 2);
 
