@@ -26,7 +26,7 @@ app.get('/places', async (req, res) => {
   res.status(200).json({ places: placesData });
 });
 
-app.get('/user-places', async (req, res) => {
+app.get('/users/places', async (req, res) => {
   const fileContent = await fs.readFile('./data/user-places.json');
 
   const places = JSON.parse(fileContent);
@@ -34,7 +34,7 @@ app.get('/user-places', async (req, res) => {
   res.status(200).json({ places });
 });
 
-app.put('/user-places', async (req, res) => {
+app.put('/users/places', async (req, res) => {
   const places = req.body.places;
 
   await fs.writeFile('./data/user-places.json', JSON.stringify(places));
