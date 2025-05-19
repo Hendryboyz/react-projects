@@ -1,15 +1,11 @@
-import { Fragment, useState, useEffect, Component } from 'react';
+import { Fragment, useState, useEffect, Component, useContext } from 'react';
 
 import Users from './Users';
 import classes from './UserFinder.module.css';
-
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
+import UsersContext from "../store/users-context";
 
 class ClassUserFinder extends Component {
+  static contextType = UsersContext;
   constructor() {
     super();
     this.state = {
@@ -19,7 +15,7 @@ class ClassUserFinder extends Component {
   }
 
   componentDidMount() {
-    this.setState({ filteredUsers: DUMMY_USERS });
+    this.setState({ filteredUsers: this.context.users });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -27,7 +23,7 @@ class ClassUserFinder extends Component {
       return;
     }
     this.setState({
-      filteredUsers: DUMMY_USERS.filter(
+      filteredUsers: this.context.users.filter(
         (user) => user.name.includes(this.state.searchTerm)),
     })
   }
@@ -36,25 +32,41 @@ class ClassUserFinder extends Component {
     this.setState({ searchTerm: event.target.value });
   }
 
+  // render() {
+  //   return (
+  //     <UsersContext.Consumer>
+  //       {context => (
+  //         <Fragment>
+  //           <div className={classes.finder}>
+  //             <input type='search' onChange={this.searchChangeHandler.bind(this)}/>
+  //           </div>
+  //           <Users users={this.state.filteredUsers} />
+  //         </Fragment>
+  //       )}
+  //     </UsersContext.Consumer>
+  //   );
+  // }
+
   render() {
     return (
       <Fragment>
-        <div className={classes.finder}>
-          <input type='search' onChange={this.searchChangeHandler.bind(this)} />
-        </div>
-        <Users users={this.state.filteredUsers} />
-      </Fragment>
+       <div className={classes.finder}>
+          <input type='search' onChange={this.searchChangeHandler.bind(this)}/>
+       </div>
+       <Users users={this.state.filteredUsers} />
+     </Fragment>
     );
   }
 }
 
 const UserFinder = () => {
-  const [filteredUsers, setFilteredUsers] = useState(DUMMY_USERS);
+  const { users } = useContext(UsersContext);
+  const [filteredUsers, setFilteredUsers] = useState(users);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     setFilteredUsers(
-      DUMMY_USERS.filter((user) => user.name.includes(searchTerm))
+      users.filter((user) => user.name.includes(searchTerm))
     );
   }, [searchTerm]);
 
