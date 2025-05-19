@@ -1,13 +1,6 @@
 import { useState, Component } from 'react';
 import User from './User';
-
 import classes from './Users.module.css';
-
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
 
 class UsersClass extends Component {
   constructor() {
@@ -15,6 +8,12 @@ class UsersClass extends Component {
     this.state = {
       showUsers: true,
     };
+  }
+
+  componentDidUpdate() {
+    if (this.props.users.length === 0) {
+      throw new Error('No users provided!');
+    }
   }
 
   toggleUsersHandler() {
@@ -42,6 +41,12 @@ class UsersClass extends Component {
     );
   }
 }
+
+const DUMMY_USERS = [
+  { id: 'u1', name: 'Max' },
+  { id: 'u2', name: 'Manuel' },
+  { id: 'u3', name: 'Julie' },
+];
 
 const Users = () => {
   const [showUsers, setShowUsers] = useState(true);
