@@ -1,13 +1,12 @@
-import { useRef, useState, useCallback } from 'react';
+import {useRef, useState, useCallback, useEffect} from 'react';
 
 import Places from './components/Places.jsx';
 import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
-import {updateUserPlaces} from "./utils/http.js";
+import {fetchUserPlaces, updateUserPlaces} from "./utils/http.js";
 import ErrorPage from './components/Error.jsx';
-import error from "eslint-plugin-react/lib/util/error.js";
 
 function App() {
   const selectedPlace = useRef();
@@ -17,6 +16,12 @@ function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState(null);
+
+  useEffect(() => {
+    fetchUserPlaces().then(userPlaces => {
+      setUserPlaces(userPlaces);
+    });
+  }, []);
 
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
@@ -28,19 +33,24 @@ function App() {
   }
 
   async function handleSelectPlace(selectedPlace) {
+    const isExistingPlace = userPlaces.some((place) => place.id === selectedPlace.id);
+    if (isExistingPlace) {
+      return;
+    }
+
     setUserPlaces((prevPickedPlaces) => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];
       }
-      const isExistingPlace = prevPickedPlaces.some((place) => place.id === selectedPlace.id);
-      if (isExistingPlace) {
-        return prevPickedPlaces;
-      }
       return [selectedPlace, ...prevPickedPlaces];
     });
 
+    await updateToServer([selectedPlace, ...userPlaces]);
+  }
+
+  const updateToServer = async (updatingPlaces) => {
     try {
-      await updateUserPlaces([selectedPlace, ...userPlaces]);
+      await updateUserPlaces(updatingPlaces);
     } catch (err) {
       setErrorUpdatingPlaces({
         message: err.message || 'Failed to update places!' ,
@@ -53,9 +63,11 @@ function App() {
     setUserPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current.id)
     );
-
+    await updateToServer(
+      userPlaces.filter((place) => place.id !== selectedPlace.current.id)
+    );
     setModalIsOpen(false);
-  }, []);
+  }, [userPlaces]);
 
   const handleError = () => {
     setErrorUpdatingPlaces(null);
