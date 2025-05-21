@@ -36,7 +36,6 @@ app.get('/users/places', async (req, res) => {
 
 app.put('/users/places', async (req, res) => {
   const places = req.body.places;
-
   await fs.writeFile('./data/user-places.json', JSON.stringify(places));
 
   res.status(200).json({ message: 'User places updated!' });

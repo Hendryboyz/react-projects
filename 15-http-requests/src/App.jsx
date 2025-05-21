@@ -5,6 +5,9 @@ import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
+import {updateUserPlaces} from "./utils/http.js";
+import ErrorPage from './components/Error.jsx';
+import error from "eslint-plugin-react/lib/util/error.js";
 
 function App() {
   const selectedPlace = useRef();
@@ -12,6 +15,8 @@ function App() {
   const [userPlaces, setUserPlaces] = useState([]);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState(null);
 
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
@@ -22,16 +27,26 @@ function App() {
     setModalIsOpen(false);
   }
 
-  function handleSelectPlace(selectedPlace) {
+  async function handleSelectPlace(selectedPlace) {
     setUserPlaces((prevPickedPlaces) => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];
       }
-      if (prevPickedPlaces.some((place) => place.id === selectedPlace.id)) {
+      const isExistingPlace = prevPickedPlaces.some((place) => place.id === selectedPlace.id);
+      if (isExistingPlace) {
         return prevPickedPlaces;
       }
       return [selectedPlace, ...prevPickedPlaces];
     });
+
+    try {
+      await updateUserPlaces([selectedPlace, ...userPlaces]);
+    } catch (err) {
+      setErrorUpdatingPlaces({
+        message: err.message || 'Failed to update places!' ,
+      });
+      setUserPlaces(userPlaces);
+    }
   }
 
   const handleRemovePlace = useCallback(async function handleRemovePlace() {
@@ -42,8 +57,20 @@ function App() {
     setModalIsOpen(false);
   }, []);
 
+  const handleError = () => {
+    setErrorUpdatingPlaces(null);
+  }
+
   return (
     <>
+      <Modal open={errorUpdatingPlaces} onClose={handleError}>
+        {errorUpdatingPlaces &&
+          <ErrorPage
+            title='An error occurred!'
+            message={errorUpdatingPlaces.message}
+            onConfirm={handleError}
+          />}
+      </Modal>
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
