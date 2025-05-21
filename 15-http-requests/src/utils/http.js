@@ -11,7 +11,7 @@ export async function fetchAvailablePlaces() {
 export async function fetchUserPlaces() {
   const resp = await fetch(`${backendFQDN}/users/places`);
   if (!resp.ok) {
-    throw new Error('Failed to fetch places.');
+    throw new Error('Failed to fetch user places.');
   }
   let data = await resp.json();
   return data.places;

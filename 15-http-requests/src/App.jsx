@@ -11,16 +11,32 @@ import ErrorPage from './components/Error.jsx';
 function App() {
   const selectedPlace = useRef();
 
+  // loading status
+  const [isFetching, setIsFetching] = useState(false);
+  // error
+  const [error, setError] = useState(null);
+  // data
   const [userPlaces, setUserPlaces] = useState([]);
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState(null);
 
   useEffect(() => {
-    fetchUserPlaces().then(userPlaces => {
-      setUserPlaces(userPlaces);
-    });
+    // fetchUserPlaces().then(userPlaces => {
+    //   setUserPlaces(userPlaces);
+    // });
+
+    async function fetchPlaces() {
+      setIsFetching(true);
+      try {
+        const userPlaces = await fetchUserPlaces();
+        setUserPlaces(userPlaces);
+      } catch (err) {
+        setError({message: err.message || 'Failed to fetch user places.'});
+      } finally {
+        setIsFetching(false);
+      }
+    }
+    fetchPlaces();
   }, []);
 
   function handleStartRemovePlace(place) {
@@ -80,7 +96,6 @@ function App() {
           <ErrorPage
             title='An error occurred!'
             message={errorUpdatingPlaces.message}
-            onConfirm={handleError}
           />}
       </Modal>
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
@@ -99,12 +114,17 @@ function App() {
         </p>
       </header>
       <main>
-        <Places
+        {error && <ErrorPage
+          title='An error occurred!'
+          message={error.message}
+        />}
+        {!error && <Places
           title="I'd like to visit ..."
           fallbackText="Select the places you would like to visit below."
+          isLoading={isFetching}
           places={userPlaces}
           onSelectPlace={handleStartRemovePlace}
-        />
+        />}
 
         <AvailablePlaces onSelectPlace={handleSelectPlace} />
       </main>
