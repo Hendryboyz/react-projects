@@ -1,4 +1,5 @@
 import {useRef, useState} from "react";
+import Input from "./Input.jsx";
 
 const INITIAL_FORM_STATE = {
   email: "",
@@ -14,16 +15,18 @@ function StateLogin() {
   const [data, setData] = useState(INITIAL_FORM_STATE);
   const [didEdit, setDidEdit] = useState(INITIAL_EDIT_STATE);
   const isEmailInvalid = didEdit.email && !data.email.includes("@");
+  const isPasswordInvalid = didEdit.password && data.password.trim().length < 6;
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(data);
-    console.log('reset', INITIAL_FORM_STATE)
-    if (isEmailInvalid) {
+    if (isEmailInvalid || isPasswordInvalid) {
       return;
     }
+    console.log(data);
     // reset
+    console.log('reset', INITIAL_FORM_STATE);
     setData(INITIAL_FORM_STATE);
+    setDidEdit(INITIAL_EDIT_STATE);
   }
 
   function handleInputChange(event) {
@@ -55,30 +58,26 @@ function StateLogin() {
       <h2>Login</h2>
 
       <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            value={data.email}
-            onBlur={handleInputBlur}
-            onChange={handleInputChange}
-          />
-          {isEmailInvalid && <div className="control-error">Please enter a valid email address</div>}
-        </div>
-
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            value={data.password}
-            onBlur={handleInputBlur}
-            onChange={handleInputChange}
-          />
-        </div>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          name="email"
+          value={data.email}
+          onBlur={handleInputBlur}
+          onChange={handleInputChange}
+          error={isEmailInvalid && 'Please enter a valid email!'}
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          name="password"
+          value={data.password}
+          onBlur={handleInputBlur}
+          onChange={handleInputChange}
+          error={isPasswordInvalid && 'Please enter a valid password!'}
+        />
       </div>
 
       <p className="form-actions">
@@ -145,4 +144,4 @@ function RefLogin() {
 
 }
 
-export default RefLogin;
+export default StateLogin;
