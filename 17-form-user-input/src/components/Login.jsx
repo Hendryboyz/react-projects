@@ -1,4 +1,5 @@
 import {useRef, useState} from "react";
+import { z } from 'zod/v4';
 import Input from "./Input.jsx";
 import {hasMinLength, isEmail, isNotEmpty} from '../util/validation.js';
 import useInput from "../hooks/useInput.js";
@@ -14,18 +15,20 @@ const INITIAL_EDIT_STATE = {
 }
 
 function StateLogin() {
+  const emailSchema = z.email().nonempty()
   const {
     value: email,
     handleInputChange: handleEmailChange,
     handleInputBlur: handleEmailBlur,
     hasError: hasEmailError,
-  } = useInput('', (value) => (isEmail(value) && isNotEmpty(value)));
+  } = useInput('', (value) => emailSchema.safeParse(value).success);
+  const passwordSchema = z.string().trim().min(6);
   const {
     value: password,
     handleInputChange: handlePasswordChange,
     handleInputBlur: handlePasswordBlur,
     hasError: hasPasswordError,
-  } = useInput('', (value) => (hasMinLength(value, 6)));
+  } = useInput('', (value) => passwordSchema.safeParse(value).success);
 
   function handleSubmit(event) {
     event.preventDefault();
