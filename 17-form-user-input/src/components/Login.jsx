@@ -1,14 +1,29 @@
 import {useRef, useState} from "react";
 
+const INITIAL_FORM_STATE = {
+  email: "",
+  password: "",
+};
+
+const INITIAL_EDIT_STATE = {
+  email: false,
+  password: false,
+}
+
 function StateLogin() {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+  const [data, setData] = useState(INITIAL_FORM_STATE);
+  const [didEdit, setDidEdit] = useState(INITIAL_EDIT_STATE);
+  const isEmailInvalid = didEdit.email && !data.email.includes("@");
 
   function handleSubmit(event) {
     event.preventDefault();
     console.log(data);
+    console.log('reset', INITIAL_FORM_STATE)
+    if (isEmailInvalid) {
+      return;
+    }
+    // reset
+    setData(INITIAL_FORM_STATE);
   }
 
   function handleInputChange(event) {
@@ -17,8 +32,23 @@ function StateLogin() {
       ...prevValues,
       [name]: value,
     }))
+    setDidEdit(prevValues => ({
+      ...prevValues,
+      [name]: false,
+    }));
   }
 
+  function handleInputBlur(event) {
+    const { name, value } = event.target;
+    setDidEdit(prevValues => ({
+      ...prevValues,
+      [name]: true,
+    }));
+
+    if (name === "email") {}
+
+    if (name === "password") {}
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -32,8 +62,10 @@ function StateLogin() {
             type="email"
             name="email"
             value={data.email}
+            onBlur={handleInputBlur}
             onChange={handleInputChange}
           />
+          {isEmailInvalid && <div className="control-error">Please enter a valid email address</div>}
         </div>
 
         <div className="control no-margin">
@@ -43,6 +75,7 @@ function StateLogin() {
             type="password"
             name="password"
             value={data.password}
+            onBlur={handleInputBlur}
             onChange={handleInputChange}
           />
         </div>
@@ -59,10 +92,21 @@ function StateLogin() {
 function RefLogin() {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const [emailIsInvalid, setEmailIsInvalid] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('submit!', emailRef.current.value, passwordRef.current.value);
+    console.log(emailRef.current?.value, passwordRef.current?.value);
+    const enteredEmail = emailRef.current?.value;
+    const enteredPassword = passwordRef.current?.value;
+
+    const isEmailValid = enteredEmail.includes('@');
+    if (!isEmailValid) {
+      setEmailIsInvalid(true);
+      return;
+    }
+    setEmailIsInvalid(false);
+    console.log('Sending HTTP request...');
   }
 
   return (
@@ -78,6 +122,7 @@ function RefLogin() {
             name="email"
             ref={emailRef}
           />
+          {emailIsInvalid && <div className="control-error">Please enter a valid email address</div>}
         </div>
 
         <div className="control no-margin">
@@ -92,7 +137,7 @@ function RefLogin() {
       </div>
 
       <p className="form-actions">
-        <button type="reset" className="button button-flat">Reset</button>
+        <button className="button button-flat">Reset</button>
         <button type='submit' className="button">Login</button>
       </p>
     </form>
