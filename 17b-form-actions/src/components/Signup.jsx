@@ -1,54 +1,60 @@
 import { useActionState } from 'react';
 import { signupFormSchema } from '../util/validation.js';
 
-export default function Signup() {
-  function signUpAction(prevFormState, formData) {
-    const email = formData.get('email');
-    const password = formData.get('password');
-    const confirmPassword = formData.get('confirm-password');
-    const firstName = formData.get('first-name');
-    const lastName = formData.get('last-name');
-    const role = formData.get('role');
-    const acquisitionChannel = formData.getAll('acquisition');
-    const terms = formData.get('terms') === 'on';
+function signUpAction(prevFormState, formData) {
+  const email = formData.get('email');
+  const password = formData.get('password');
+  const confirmPassword = formData.get('confirm-password');
+  const firstName = formData.get('first-name');
+  const lastName = formData.get('last-name');
+  const role = formData.get('role');
+  const acquisitionChannel = formData.getAll('acquisition');
+  const terms = formData.get('terms') === 'on';
 
-    const parsedForm = signupFormSchema.safeParse({
-      email,
-      password,
-      confirmPassword,
-      firstName,
-      lastName,
-      role,
-      acquisitionChannel,
-      terms,
-    });
-    console.log(parsedForm);
-    const errors = [];
+  const parsedForm = signupFormSchema.safeParse({
+    email,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    role,
+    acquisitionChannel,
+    terms,
+  });
 
-    if (!parsedForm.success) {
-      for (const issue of parsedForm.error.issues) {
-        errors.push(issue.message);
-      }
-    }
+  const errors = [];
 
-    if (errors.length > 0) {
-      return { errors, enteredValues: {
-          email,
-          password,
-          confirmPassword,
-          firstName,
-          lastName,
-          role,
-          acquisitionChannel,
-          terms,
-        },
-      };
-    } else {
-      return { errors: null };
+  if (!parsedForm.success) {
+    for (const issue of parsedForm.error.issues) {
+      errors.push(issue.message);
     }
   }
 
-  const [formState, formAction, pending] = useActionState(signUpAction, { errors: null });
+  if (errors.length > 0) {
+    return { errors, enteredValues: {
+        email,
+        password,
+        confirmPassword,
+        firstName,
+        lastName,
+        role,
+        acquisitionChannel,
+        terms,
+      },
+    };
+  } else {
+    return { errors: null };
+  }
+}
+
+
+export default function Signup() {
+
+  const [
+    formState,
+    formAction,
+    pending,
+  ] = useActionState(signUpAction, { errors: null });
 
   return (
     <form action={formAction}>
