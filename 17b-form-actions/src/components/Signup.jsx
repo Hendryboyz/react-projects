@@ -1,6 +1,47 @@
+import { useActionState } from 'react';
+import { signupFormSchema } from '../util/validation.js';
+
 export default function Signup() {
+  function signUpAction(formData) {
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirm-password');
+    const firstName = formData.get('first-name');
+    const lastName = formData.get('last-name');
+    const role = formData.get('role');
+    const acquisitionChannel = formData.getAll('acquisition');
+    const terms = formData.get('terms') === 'on';
+
+    const parsedForm = signupFormSchema.safeParse({
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      role,
+      acquisitionChannel,
+      terms,
+    });
+    console.log(parsedForm);
+    const errors = [];
+
+    if (!parsedForm.success) {
+      for (const issue of parsedForm.error.issues) {
+        errors.push(issue.message);
+      }
+    }
+
+    if (errors.length > 0) {
+      return { errors };
+    } else {
+      return { errors: null };
+    }
+  }
+
+  const [formState, formAction, pending] = useActionState(signUpAction, { errors: null });
+
   return (
-    <form>
+    <form action={signUpAction}>
       <h2>Welcome on board!</h2>
       <p>We just need a little bit of data from you to get you started 🚀</p>
 
@@ -84,6 +125,12 @@ export default function Signup() {
           agree to the terms and conditions
         </label>
       </div>
+
+      {/*{formState.errors && <ul>*/}
+      {/*  {formState.errors.map(error => (*/}
+      {/*    <li key={error}>{error}</li>*/}
+      {/*  ))}*/}
+      {/*</ul> }*/}
 
       <p className="form-actions">
         <button type="reset" className="button button-flat">
