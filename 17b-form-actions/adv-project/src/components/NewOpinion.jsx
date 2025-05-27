@@ -1,33 +1,40 @@
-import { useActionState } from 'react';
+import {useActionState, useContext} from 'react';
 import {optionFormSchema} from "../utils/validation.js";
+import {OpinionsContext} from "../store/opinions-context.jsx";
 
-function handleOpinionSubmit(prevFormState, formState) {
-  const formData = {
-    userName: formState.get('userName'),
-    title: formState.get('title'),
-    body: formState.get('body'),
-  };
-
-  const parsedFormData = optionFormSchema.safeParse(formData);
-
-  const errors = [];
-
-  if (!parsedFormData.success) {
-    for (const issue of parsedFormData.error.issues) {
-      errors.push(issue.message);
-    }
-    return { errors, enteredValue: formData };
-  } else {
-    return { errors: null };
-  }
-}
 
 export function NewOpinion() {
+  const { addOpinion } = useContext(OpinionsContext);
+
+  async function handleOpinionSubmit(prevFormState, formState) {
+    const formData = {
+      userName: formState.get('userName'),
+      title: formState.get('title'),
+      body: formState.get('body'),
+    };
+
+    const parsedFormData = optionFormSchema.safeParse(formData);
+
+    const errors = [];
+
+    if (!parsedFormData.success) {
+      for (const issue of parsedFormData.error.issues) {
+        errors.push(issue.message);
+      }
+      return { errors, enteredValue: formData };
+    } else {
+      await addOpinion(formData);
+      return { errors: null };
+    }
+  }
+
+  // pending will be `true` if form is submitting
   const [
     formState,
     formAction,
     pending,
   ] = useActionState(handleOpinionSubmit, {});
+
 
   return (
     <div id="new-opinion">
