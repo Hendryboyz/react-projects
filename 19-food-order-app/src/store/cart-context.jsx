@@ -2,13 +2,17 @@ import {createContext, useState} from "react";
 
 export const CartContext = createContext({
   items: [],
+  isCartOpen: false,
   addToCart: ({id, name, price}) => {},
+  openCart: () => {},
+  closeCart: () => {}
 });
 
 export default function CartContextProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setCartOpen] = useState(false);
+
   function addToCart({id, name, price}) {
-    console.log(id, name, price);
     setCartItems((prevCartState) => {
       const itemIndex = prevCartState.findIndex(i => i.id === id);
       const existingItem = itemIndex !== -1;
@@ -29,7 +33,14 @@ export default function CartContextProvider({ children }) {
 
   const initialCart = {
     items: cartItems,
-    addToCart
+    isCartOpen,
+    addToCart,
+    openCart: () => {
+      setCartOpen(true);
+    },
+    closeCart: () => {
+      setCartOpen(false);
+    },
   };
   return (
     <CartContext.Provider value={initialCart}>
