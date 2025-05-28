@@ -22,6 +22,7 @@ export default function Menu() {
       {!error && mealItems.length > 0 && (mealItems.map((mealItem) => (
         <MealItem
           key={mealItem.id}
+          id={mealItem.id}
           name={mealItem.name}
           description={mealItem.description}
           price={mealItem.price}
