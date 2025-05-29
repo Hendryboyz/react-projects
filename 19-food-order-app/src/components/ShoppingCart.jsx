@@ -5,7 +5,7 @@ import Modal from "./Modal.jsx";
 
 
 export default function ShoppingCart() {
-  const {items, isCartOpen, closeCart} = useContext(CartContext);
+  const {items, isCartOpen, closeCart, updateItemQuantity} = useContext(CartContext);
 
   const cartTotals = useMemo(() => {
     return items.reduce((totals, i) => i.price * i.count + totals, 0);
@@ -20,9 +20,9 @@ export default function ShoppingCart() {
             <li className="cart-item" key={item.id}>
               <p>{item.name} - {item.count} x ${item.price}</p>
               <div className="cart-item-actions">
-                <button>-</button>
+                <button onClick={() => updateItemQuantity({id: item.id, delta: -1})}>-</button>
                 <span>{item.count}</span>
-                <button>+</button>
+                <button onClick={() => updateItemQuantity({id: item.id, delta: 1})}>+</button>
               </div>
             </li>
           );
@@ -36,7 +36,7 @@ export default function ShoppingCart() {
         >
           Close
         </button>
-        <button className="button">Go to Checkout</button>
+        <button className="button" disabled={items.length === 0}>Go to Checkout</button>
       </div>
     </Modal>
   ), document.getElementById('modal'));
