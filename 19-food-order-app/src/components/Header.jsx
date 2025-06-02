@@ -1,6 +1,7 @@
 import {useContext} from "react";
 import Logo from '../assets/logo.jpg';
 import {CartContext} from "../store/cart-context.jsx";
+import Button from "./UI/Button.jsx";
 export default function Header() {
   const {items, openCart} = useContext(CartContext);
   return (
@@ -10,12 +11,12 @@ export default function Header() {
         <h1>ReactFood</h1>
       </div>
       <nav id="button">
-        <button
-          className="text-button"
+        <Button
+          textOnly={true}
           onClick={openCart}
         >
           Cart({items.length})
-        </button>
+        </Button>
       </nav>
     </header>
   );

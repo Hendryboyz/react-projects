@@ -2,6 +2,7 @@ import {createPortal} from "react-dom";
 import {useContext, useMemo} from "react";
 import {CartContext} from "../store/cart-context.jsx";
 import Modal from "./Modal.jsx";
+import Button from "./UI/Button.jsx";
 
 
 export default function ShoppingCart() {
@@ -30,13 +31,13 @@ export default function ShoppingCart() {
       </ul>
       <div className="cart-total">${cartTotals}</div>
       <div className="modal-actions">
-        <button
-          className="text-button"
+        <Button
+          textOnly={true}
           onClick={closeCart}
         >
           Close
-        </button>
-        <button className="button" disabled={items.length === 0}>Go to Checkout</button>
+        </Button>
+        <Button disabled={items.length === 0}>Go to Checkout</Button>
       </div>
     </Modal>
   ), document.getElementById('modal'));

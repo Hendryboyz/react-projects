@@ -2,6 +2,7 @@ import {BACKEND_URL} from "../utils/fetch.js";
 import {useContext} from "react";
 import {CartContext} from "../store/cart-context.jsx";
 import {currencyFormatter} from "../utils/formatting.js";
+import Button from "./UI/Button.jsx";
 
 export default function MealItem({meal}) {
   const { addToCart } = useContext(CartContext);
@@ -16,12 +17,11 @@ export default function MealItem({meal}) {
           <p className="meal-item-description">{description}</p>
         </div>
         <div className="meal-item-actions">
-          <button
-            className="button"
+          <Button
             onClick={() => addToCart({id, name, price})}
           >
             Add to Cart
-          </button>
+          </Button>
         </div>
       </article>
     </div>
