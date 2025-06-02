@@ -5,16 +5,18 @@ export default function Header() {
   const {items, openCart} = useContext(CartContext);
   return (
     <header id="main-header">
-      <h1 id="title">
-        <img src={Logo} alt="logo" />
-        ReactFood
-      </h1>
-      <button
-        className="text-button"
-        onClick={openCart}
-      >
-        Cart({items.length})
-      </button>
+      <div id="title">
+        <img src={Logo} alt="logo"/>
+        <h1>ReactFood</h1>
+      </div>
+      <nav id="button">
+        <button
+          className="text-button"
+          onClick={openCart}
+        >
+          Cart({items.length})
+        </button>
+      </nav>
     </header>
   );
 }

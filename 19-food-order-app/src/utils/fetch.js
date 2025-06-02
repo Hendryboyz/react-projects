@@ -14,3 +14,14 @@ export async function fetchMeals() {
     throw new Error('Fetch meals failed.');
   }
 }
+
+export async function checkoutOrder() {
+  const resp = await fetch(`${BACKEND_URL}/orders`, {
+    method: 'POST',
+  })
+  if (resp.ok) {
+
+  } else {
+    throw new Error('Checkout new order failed.');
+  }
+}
