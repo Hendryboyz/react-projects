@@ -1,4 +1,3 @@
-import {createPortal} from "react-dom";
 import {useContext, useMemo} from "react";
 import {CartContext} from "../store/cart-context.jsx";
 import Modal from "./Modal.jsx";
@@ -12,7 +11,7 @@ export default function ShoppingCart() {
     return items.reduce((totals, i) => i.price * i.count + totals, 0);
   }, [items]);
 
-  return createPortal((
+  return (
     <Modal open={isCartOpen} onClose={closeCart}>
       <h2></h2>
       <ul>
@@ -37,8 +36,13 @@ export default function ShoppingCart() {
         >
           Close
         </Button>
-        <Button disabled={items.length === 0}>Go to Checkout</Button>
+        <Button
+          disabled={items.length === 0}
+          onClick={() => {}}
+        >
+          Go to Checkout
+        </Button>
       </div>
     </Modal>
-  ), document.getElementById('modal'));
+  );
 };
