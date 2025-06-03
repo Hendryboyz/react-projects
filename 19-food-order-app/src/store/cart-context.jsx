@@ -3,10 +3,13 @@ import {createContext, useReducer, useState} from "react";
 export const CartContext = createContext({
   items: [],
   isCartOpen: false,
+  isCheckoutCart: false,
   addToCart: ({id, name, price}) => {},
   updateItemQuantity: ({id, delta}) => {},
   openCart: () => {},
-  closeCart: () => {}
+  closeCart: () => {},
+  startCheckout: () => {},
+  stopCheckout: () => {},
 });
 
 function shoppingCartReducer(prevCartState, action) {
@@ -69,6 +72,7 @@ export default function CartContextProvider({ children }) {
     items: []
   }, undefined);
   const [isCartOpen, setCartOpen] = useState(false);
+  const [isCheckoutCart, setCheckoutCart] = useState(false);
 
   function addToCart({id, name, price}) {
     cartDispatch({
@@ -87,6 +91,7 @@ export default function CartContextProvider({ children }) {
   const initialCart = {
     items: cartState.items,
     isCartOpen,
+    isCheckoutCart,
     addToCart,
     updateItemQuantity,
     openCart: () => {
@@ -94,6 +99,13 @@ export default function CartContextProvider({ children }) {
     },
     closeCart: () => {
       setCartOpen(false);
+    },
+    startCheckout: () => {
+      setCartOpen(false);
+      setCheckoutCart(true);
+    },
+    stopCheckout: () => {
+      setCheckoutCart(false);
     },
   };
   return (

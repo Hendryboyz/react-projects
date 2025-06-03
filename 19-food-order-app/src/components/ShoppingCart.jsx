@@ -2,10 +2,11 @@ import {useContext, useMemo} from "react";
 import {CartContext} from "../store/cart-context.jsx";
 import Modal from "./Modal.jsx";
 import Button from "./UI/Button.jsx";
+import {currencyFormatter} from "../utils/formatting.js";
 
 
 export default function ShoppingCart() {
-  const {items, isCartOpen, closeCart, updateItemQuantity} = useContext(CartContext);
+  const {items, isCartOpen, closeCart, updateItemQuantity, startCheckout} = useContext(CartContext);
 
   const cartTotals = useMemo(() => {
     return items.reduce((totals, i) => i.price * i.count + totals, 0);
@@ -13,12 +14,12 @@ export default function ShoppingCart() {
 
   return (
     <Modal open={isCartOpen} onClose={closeCart}>
-      <h2></h2>
+      <h2>Your Cart</h2>
       <ul>
         {items.map((item) => {
           return (
             <li className="cart-item" key={item.id}>
-              <p>{item.name} - {item.count} x ${item.price}</p>
+              <p>{item.name} - {item.count} x {currencyFormatter.format(item.price)}</p>
               <div className="cart-item-actions">
                 <button onClick={() => updateItemQuantity({id: item.id, delta: -1})}>-</button>
                 <span>{item.count}</span>
@@ -28,7 +29,7 @@ export default function ShoppingCart() {
           );
         })}
       </ul>
-      <div className="cart-total">${cartTotals}</div>
+      <div className="cart-total">Total Amount: {currencyFormatter.format(cartTotals)}</div>
       <div className="modal-actions">
         <Button
           textOnly={true}
@@ -38,7 +39,7 @@ export default function ShoppingCart() {
         </Button>
         <Button
           disabled={items.length === 0}
-          onClick={() => {}}
+          onClick={startCheckout}
         >
           Go to Checkout
         </Button>
