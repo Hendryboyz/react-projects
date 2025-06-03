@@ -47,7 +47,8 @@ function shoppingCartReducer(prevCartState, action) {
     const existingItem = updatedItems[itemIndex];
     const updatedQuantity = existingItem.count + delta;
     if (updatedQuantity === 0) {
-      updatedItems = updatedItems.filter(item => item.id !== id);
+      // updatedItems = updatedItems.filter(item => item.id !== id);
+      updatedItems.splice(itemIndex, 1);
     } else {
       updatedItems[itemIndex] = {
         ...existingItem,

@@ -7,6 +7,11 @@ import Button from "./UI/Button.jsx";
 export default function MealItem({meal}) {
   const { addToCart } = useContext(CartContext);
   const {id, image: itemImageUrl, name, price, description} = meal;
+
+  function handleAddMealToCart() {
+    addToCart({id, name, price});
+  }
+
   return (
     <div className="meal-item">
       <article>
@@ -17,9 +22,7 @@ export default function MealItem({meal}) {
           <p className="meal-item-description">{description}</p>
         </div>
         <div className="meal-item-actions">
-          <Button
-            onClick={() => addToCart({id, name, price})}
-          >
+          <Button onClick={handleAddMealToCart}>
             Add to Cart
           </Button>
         </div>
