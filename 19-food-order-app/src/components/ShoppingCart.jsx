@@ -1,4 +1,4 @@
-import {useContext, useMemo} from "react";
+import {useContext} from "react";
 import {CartContext} from "../store/cart-context.jsx";
 import Modal from "./Modal.jsx";
 import Button from "./UI/Button.jsx";
@@ -6,12 +6,7 @@ import {currencyFormatter} from "../utils/formatting.js";
 
 
 export default function ShoppingCart() {
-  const {items, isCartOpen, closeCart, updateItemQuantity, startCheckout} = useContext(CartContext);
-
-  const cartTotals = useMemo(() => {
-    return items.reduce((totals, i) => i.price * i.count + totals, 0);
-  }, [items]);
-
+  const {items, itemsTotals: cartTotals, isCartOpen, closeCart, updateItemQuantity, startCheckout} = useContext(CartContext);
   return (
     <Modal open={isCartOpen} onClose={closeCart}>
       <h2>Your Cart</h2>

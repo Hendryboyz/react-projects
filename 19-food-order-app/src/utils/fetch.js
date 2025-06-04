@@ -15,9 +15,17 @@ export async function fetchMeals() {
   }
 }
 
-export async function checkoutOrder() {
+export async function checkoutOrder(customerInfo) {
   const resp = await fetch(`${BACKEND_URL}/orders`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      order: {
+        customer: customerInfo,
+      }
+    }),
   })
   if (resp.ok) {
 

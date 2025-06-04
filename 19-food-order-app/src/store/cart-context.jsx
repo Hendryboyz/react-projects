@@ -1,7 +1,8 @@
-import {createContext, useReducer, useState} from "react";
+import {createContext, useMemo, useReducer, useState} from "react";
 
 export const CartContext = createContext({
   items: [],
+  itemsTotals: 0,
   isCartOpen: false,
   isCheckoutCart: false,
   addToCart: ({id, name, price}) => {},
@@ -88,8 +89,13 @@ export default function CartContextProvider({ children }) {
     });
   }
 
+  const cartTotals = useMemo(() => {
+    return cartState.items.reduce((totals, i) => i.price * i.count + totals, 0);
+  }, [cartState]);
+
   const initialCart = {
     items: cartState.items,
+    itemsTotals: cartTotals,
     isCartOpen,
     isCheckoutCart,
     addToCart,
