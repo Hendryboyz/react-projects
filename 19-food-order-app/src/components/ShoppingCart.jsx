@@ -3,12 +3,18 @@ import {CartContext} from "../store/cart-context.jsx";
 import Modal from "./Modal.jsx";
 import Button from "./UI/Button.jsx";
 import {currencyFormatter} from "../utils/formatting.js";
+import {UserProgressContext} from "../store/user-progress-context.jsx";
 
 
 export default function ShoppingCart() {
-  const {items, itemsTotals: cartTotals, isCartOpen, closeCart, updateItemQuantity, startCheckout} = useContext(CartContext);
+  const {
+    items,
+    itemsTotals: cartTotals,
+    updateItemQuantity,
+  } = useContext(CartContext);
+  const {isCartOpen, closeCart, startCheckout} = useContext(UserProgressContext);
   return (
-    <Modal open={isCartOpen} onClose={closeCart}>
+    <Modal open={isCartOpen} onClose={closeCart} className="cart">
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => {
@@ -24,7 +30,7 @@ export default function ShoppingCart() {
           );
         })}
       </ul>
-      <div className="cart-total">Total Amount: {currencyFormatter.format(cartTotals)}</div>
+      <p className="cart-total">Total Amount: {currencyFormatter.format(cartTotals)}</p>
       <div className="modal-actions">
         <Button
           textOnly={true}

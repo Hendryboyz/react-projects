@@ -6,10 +6,12 @@ import Button from "./UI/Button.jsx";
 import {currencyFormatter} from "../utils/formatting.js";
 import Submit from "./UI/Submit.jsx";
 import {orderSchema} from "../utils/validate.js";
-import {checkoutOrder} from "../utils/fetch.js";
+// import {checkoutOrder} from "../utils/fetch.js";
+import {UserProgressContext} from "../store/user-progress-context.jsx";
 
 export default function Checkout() {
-  const {itemsTotals: cartTotals, isCheckoutCart, stopCheckout} = useContext(CartContext);
+  const {itemsTotals: cartTotals} = useContext(CartContext);
+  const {isCheckout, stopCheckout} = useContext(UserProgressContext);
 
   const handleOrderSubmit = async (_, orderState) => {
     const formData = {
@@ -44,7 +46,7 @@ export default function Checkout() {
 
   return (
     <Modal
-      open={isCheckoutCart}
+      open={isCheckout}
       onClose={stopCheckout}
     >
       <div>

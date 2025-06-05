@@ -3,14 +3,8 @@ import {createContext, useMemo, useReducer, useState} from "react";
 export const CartContext = createContext({
   items: [],
   itemsTotals: 0,
-  isCartOpen: false,
-  isCheckoutCart: false,
   addToCart: ({id, name, price}) => {},
   updateItemQuantity: ({id, delta}) => {},
-  openCart: () => {},
-  closeCart: () => {},
-  startCheckout: () => {},
-  stopCheckout: () => {},
 });
 
 function shoppingCartReducer(prevCartState, action) {
@@ -72,8 +66,6 @@ export default function CartContextProvider({ children }) {
   const [cartState, cartDispatch] = useReducer(shoppingCartReducer, {
     items: []
   }, undefined);
-  const [isCartOpen, setCartOpen] = useState(false);
-  const [isCheckoutCart, setCheckoutCart] = useState(false);
 
   function addToCart({id, name, price}) {
     cartDispatch({
@@ -96,23 +88,8 @@ export default function CartContextProvider({ children }) {
   const initialCart = {
     items: cartState.items,
     itemsTotals: cartTotals,
-    isCartOpen,
-    isCheckoutCart,
     addToCart,
     updateItemQuantity,
-    openCart: () => {
-      setCartOpen(true);
-    },
-    closeCart: () => {
-      setCartOpen(false);
-    },
-    startCheckout: () => {
-      setCartOpen(false);
-      setCheckoutCart(true);
-    },
-    stopCheckout: () => {
-      setCheckoutCart(false);
-    },
   };
   return (
     <CartContext.Provider value={initialCart}>
