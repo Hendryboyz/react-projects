@@ -11,7 +11,7 @@ import {UserProgressContext} from "../store/user-progress-context.jsx";
 
 export default function Checkout() {
   const {itemsTotals: cartTotals} = useContext(CartContext);
-  const {isCheckout, stopCheckout} = useContext(UserProgressContext);
+  const {progress, stopCheckout} = useContext(UserProgressContext);
 
   const handleOrderSubmit = async (_, orderState) => {
     const formData = {
@@ -46,7 +46,7 @@ export default function Checkout() {
 
   return (
     <Modal
-      open={isCheckout}
+      open={progress === 'checkout'}
       onClose={stopCheckout}
     >
       <div>

@@ -1,8 +1,7 @@
 import {createContext, useState} from "react";
 
 export const UserProgressContext = createContext({
-  isCartOpen: false,
-  isCheckout: false,
+  progress: '',
   showCart: () => {},
   closeCart: () => {},
   startCheckout: () => {},
@@ -10,29 +9,28 @@ export const UserProgressContext = createContext({
 });
 
 export default function UserProgressContextProvider({ children }) {
-  const [isCartOpen, setCartOpen] = useState(false);
-  const [isCheckout, setCheckoutOpen] = useState(false);
+  // const [isCartOpen, setCartOpen] = useState(false);
+  // const [isCheckout, setCheckoutOpen] = useState(false);
+  const [userProgress, setUserProgress] = useState('');
 
   function showCart() {
-    setCartOpen(true);
+    setUserProgress('cart');
   }
 
   function closeCart() {
-    setCartOpen(false);
+    setUserProgress(prevState => prevState === 'cart' ? '' : prevState);
   }
 
   function startCheckout() {
-    setCartOpen(false);
-    setCheckoutOpen(true);
+    setUserProgress('checkout');
   }
 
   function stopCheckout() {
-    setCheckoutOpen(false);
+    setUserProgress(prevState => prevState === 'checkout' ? '' : prevState);
   }
 
   const userProgressState = {
-    isCartOpen,
-    isCheckout,
+    progress: userProgress,
     showCart: showCart,
     closeCart: closeCart,
     startCheckout: startCheckout,

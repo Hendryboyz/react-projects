@@ -12,9 +12,9 @@ export default function ShoppingCart() {
     itemsTotals: cartTotals,
     updateItemQuantity,
   } = useContext(CartContext);
-  const {isCartOpen, closeCart, startCheckout} = useContext(UserProgressContext);
+  const {progress, closeCart, startCheckout} = useContext(UserProgressContext);
   return (
-    <Modal open={isCartOpen} onClose={closeCart} className="cart">
+    <Modal open={progress === 'cart'} onClose={closeCart} className="cart">
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => {
