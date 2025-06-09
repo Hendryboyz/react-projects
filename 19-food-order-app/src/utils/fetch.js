@@ -15,7 +15,7 @@ export async function fetchMeals() {
   }
 }
 
-export async function checkoutOrder(customerInfo) {
+export async function checkoutOrder(customerInfo, items) {
   const resp = await fetch(`${BACKEND_URL}/orders`, {
     method: 'POST',
     headers: {
@@ -24,6 +24,7 @@ export async function checkoutOrder(customerInfo) {
     body: JSON.stringify({
       order: {
         customer: customerInfo,
+        items,
       }
     }),
   })
