@@ -31,12 +31,13 @@ export default function ShoppingCart() {
         >
           Close
         </Button>
-        <Button
-          disabled={items.length === 0}
-          onClick={startCheckout}
-        >
-          Go to Checkout
-        </Button>
+        {items.length > 0 &&
+          <Button
+            onClick={startCheckout}
+          >
+            Go to Checkout
+          </Button>
+        }
       </div>
     </Modal>
   );

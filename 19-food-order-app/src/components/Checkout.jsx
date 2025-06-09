@@ -66,6 +66,7 @@ export default function Checkout() {
             margin: "25px 0px 25px 0px"
           }}>
             <Button
+              type="button"
               textOnly={true}
               onClick={stopCheckout}
             >
