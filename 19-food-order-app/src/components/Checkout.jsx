@@ -1,5 +1,5 @@
 import Modal from "./Modal.jsx";
-import {useContext, useActionState} from "react";
+import {useContext, useActionState, useState} from "react";
 import {CartContext} from "../store/cart-context.jsx";
 import Input from "./UI/Input.jsx";
 import Button from "./UI/Button.jsx";
@@ -18,16 +18,22 @@ const checkoutOrderConfig = {
   },
 }
 
+const initialFormState = {};
+
 export default function Checkout() {
   const {items, itemsTotals: cartTotals, clearCart} = useContext(CartContext);
   const {progress, stopCheckout} = useContext(UserProgressContext);
+  const [isSubmitted, setSubmitted] = useState(false);
 
   const handleOrderSubmit = async (_, orderState) => {
+    if (orderState === undefined) {
+      return initialFormState;
+    }
     const formData = {
       email: orderState.get('email'),
       name: orderState.get('name'),
       street: orderState.get('street'),
-      'postal-code': orderState.get('postalCode'),
+      'postal-code': orderState.get('postal-code'),
       city: orderState.get('city'),
     }
 
@@ -39,11 +45,16 @@ export default function Checkout() {
       for (const iss of parseFormData.error.issues) {
         errors.push(iss.message);
       }
-      return {errors, enteredValue: formData};
-    } else {
-      // await checkoutOrder(formData);
-      return {errors: null};
     }
+
+    try {
+      await checkoutOrder(formData, items);
+      setSubmitted(true);
+      return {errors: null};
+    } catch (error) {
+      errors.push(error.message);
+    }
+    return {errors, enteredValue: formData};
   }
 
   // pending will be `true` if form is submitting
@@ -51,7 +62,7 @@ export default function Checkout() {
     formState,
     formAction,
     pending
-  ] = useActionState(handleOrderSubmit, {})
+  ] = useActionState(handleOrderSubmit, initialFormState);
 
   const {
     data,
@@ -79,7 +90,6 @@ export default function Checkout() {
       for (const iss of parseFormData.error.issues) {
         errors.push(iss.message);
       }
-      // return {errors, enteredValue: formData};
     } else {
       await sendRequest(JSON.stringify({
         order: {
@@ -87,8 +97,6 @@ export default function Checkout() {
           items,
         }
       }));
-      // await checkoutOrder(formData, items);
-      // return {errors: null};
     }
   }
 
@@ -100,19 +108,19 @@ export default function Checkout() {
     >
       Close
     </Button>
-    {/*<Submit>*/}
-    {/*  Submit Order*/}
-    {/*</Submit>*/}
-    <Button type="submit">
+    <Submit>
       Submit Order
-    </Button>
+    </Submit>
+    {/*<Button type="submit">*/}
+    {/*  Submit Order*/}
+    {/*</Button>*/}
   </>);
 
-  if (isSending) {
+  if (pending) {
     actions = (<span>Sending order data...</span>);
   }
 
-  if (data && !error) {
+  if (!formState.errors && isSubmitted) {
     return (
       <Modal
         open={progress === 'checkout'}
@@ -123,10 +131,14 @@ export default function Checkout() {
         <p>We will get back to you with more details via email within the next few minutes.</p>
         <div className="modal-actions">
           <Button onClick={() => {
-            stopCheckout();
-            clearCart();
-            resetHttp();
-          }}>Okay</Button>
+              stopCheckout();
+              clearCart();
+              setSubmitted(false);
+              // resetHttp();
+            }}
+          >
+            Okay
+          </Button>
         </div>
       </Modal>
     );
@@ -142,8 +154,8 @@ export default function Checkout() {
         <div style={{margin: "25px 0px 25px 0px"}}>
           Total Amount: {currencyFormatter.format(cartTotals)}
         </div>
-        {/*<form action={formAction}>*/}
-        <form onSubmit={handleSubmit}>
+        <form action={formAction}>
+        {/*<form onSubmit={handleSubmit}>*/}
           <Input label="Full Name" type="text" name="name" defaultValue={formState.enteredValue?.name} />
           <Input label="E-Mail Address" type="email" name="email" defaultValue={formState.enteredValue?.email}/>
           <Input label="Street" type="text" name="street" defaultValue={formState.enteredValue?.street}/>
@@ -151,7 +163,8 @@ export default function Checkout() {
             <Input label="Postal Code" type="text" name="postal-code" defaultValue={formState.enteredValue?.["postal-code"]} />
             <Input label="City" type="text" name="city" defaultValue={formState.enteredValue?.city}/>
           </div>
-          {error && <Error title="Failed to submit order" message={error} />}
+          {/*{error && <Error title="Failed to submit order" message={error} />}*/}
+          {formState.errors && <Error title="Failed to submit order" message={formState.errors} />}
           <div className="modal-actions" style={{
             margin: "25px 0px 25px 0px"
           }}>
