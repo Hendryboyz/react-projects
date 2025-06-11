@@ -5,6 +5,7 @@ export const CartContext = createContext({
   itemsTotals: 0,
   addToCart: ({id, name, price}) => {},
   updateItemQuantity: ({id, delta}) => {},
+  clearCart: () => {},
 });
 
 function shoppingCartReducer(prevCartState, action) {
@@ -59,6 +60,10 @@ function shoppingCartReducer(prevCartState, action) {
     };
   }
 
+  if (action.type === 'CLEAR_CART') {
+    return {...prevCartState, items: []};
+  }
+
   return prevCartState;
 }
 
@@ -81,6 +86,12 @@ export default function CartContextProvider({ children }) {
     });
   }
 
+  function clearCart() {
+    cartDispatch({
+      type: 'CLEAR_CART',
+    });
+  }
+
   const cartTotals = useMemo(() => {
     return cartState.items.reduce((totals, i) => i.price * i.count + totals, 0);
   }, [cartState]);
@@ -90,6 +101,7 @@ export default function CartContextProvider({ children }) {
     itemsTotals: cartTotals,
     addToCart,
     updateItemQuantity,
+    clearCart,
   };
   return (
     <CartContext.Provider value={initialCart}>
