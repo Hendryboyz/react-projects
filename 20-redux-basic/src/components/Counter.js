@@ -7,8 +7,8 @@ const FunctionCounter = () => {
   const dispatch = useDispatch();
   // useSelector() will subscribe the store automatically
   const { counter, isCounterShow } = useSelector(state => ({
-    counter: state.count,
-    isCounterShow: state.isShow,
+    counter: state.counter.count,
+    isCounterShow: state.counter.isShow,
   }));
   const toggleCounterHandler = () => {
     dispatch(counterActions.toggleCounter());

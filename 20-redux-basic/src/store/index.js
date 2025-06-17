@@ -1,33 +1,10 @@
 import {createStore} from 'redux';
-import {createSlice, configureStore} from '@reduxjs/toolkit';
+import {initialCounterState, counterStore} from "./counter";
+import {authStore} from './auth';
+import {configureStore} from "@reduxjs/toolkit";
 
-const initialState = {
-  count: 0,
-  isShow: true
-}
 
-// prepare a slice of global states in this application
-const counterStore = createSlice({
-  name: 'counter',
-  initialState: initialState,
-  reducers: {
-    increment(state, action) {
-      let { delta } = action.payload;
-      if (!delta) { delta = 1 }
-      state.count += delta;
-    },
-    decrement: (state, action) => {
-      let { delta } = action.payload;
-      if (!delta) { delta = 1 }
-      state.count -= delta;
-    },
-    toggleCounter: (state) => {
-      state.isShow = !state.isShow;
-    }
-  }
-})
-
-function counterReducer(state = initialState, action) {
+function counterReducer(state = initialCounterState, action) {
   if (action.type === 'INCREMENT') {
     let { delta } = action.payload;
     if (!delta) { delta = 1 }
@@ -55,16 +32,19 @@ function counterReducer(state = initialState, action) {
 
   return state;
 }
-
 // const store = createStore(counterReducer);
 
 // configureStore in reduxjs/toolkit can help merge multiple slice of reducers to a central/single store
 const store = configureStore({
-  reducer: counterStore.reducer,
-  // reducer: { counter: counterStore.reducer },
+  // reducer: counterStore.reducer,
+  reducer: {
+    counter: counterStore.reducer,
+    auth: authStore.reducer,
+  },
 });
 
 // methods in action will create an object like
 // { type: SOME_UNIQUE_ID, payload: { ...objects_user_provide } }
 export const counterActions = counterStore.actions;
+export const authActions = authStore.actions;
 export default store;
