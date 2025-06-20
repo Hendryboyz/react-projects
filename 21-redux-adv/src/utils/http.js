@@ -1,0 +1,1 @@
+export const FIREBASE_FQDN = 'https://learning-redux-ba78a-default-rtdb.asia-southeast1.firebasedatabase.app/';
