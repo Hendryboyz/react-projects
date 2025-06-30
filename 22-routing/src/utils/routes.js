@@ -4,12 +4,12 @@ import ProductsPage from "../pages/Products";
 export const routes = [
   {
     name: 'Home',
-    path: '/',
+    path: '',
     element: <HomePage />
   },
   {
     name: 'Products',
-    path: '/products',
+    path: 'products',
     element: <ProductsPage />
   },
 ];

@@ -20,7 +20,7 @@ export default function Products() {
       <ul>
         {PRODUCTS.map((item) => (
           <li key={item.id}>
-            <Link to={`/products/${item.id}`}>{item.title}</Link>
+            <Link to={`${item.id}`}>{item.title}</Link>
           </li>
         ))}
       </ul>

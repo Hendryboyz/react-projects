@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 export const productDetailParams = {
   id: 'productId',
@@ -12,13 +12,13 @@ function ProductDetail() {
   } = params;
 
   function backToListHandler() {
-    navigate('/products');
+    navigate('products');
   }
 
   return (
     <>
       <p>This is product {productId}</p>
-      <button onClick={backToListHandler}>Go to product list</button>
+      <p><Link to={'..'} relative='path'>Back</Link></p>
     </>
   );
 }

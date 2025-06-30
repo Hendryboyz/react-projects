@@ -12,7 +12,6 @@ export default function MainNavigation() {
               <NavLink
                 to={route.path}
                 className={({isActive}) => isActive ? classes.active : undefined}
-                end={route.path === '/'}
               >
                 {route.name}
               </NavLink>
