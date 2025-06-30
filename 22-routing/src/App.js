@@ -18,7 +18,7 @@ const routeElements = createRoutesFromElements(
       path="/"
       element={<RootLayout/>}
     >
-      <Route path="" element={<HomePage />} />
+      <Route index element={<HomePage />} />
       <Route path="products" element={<ProductsPage />} />
       <Route path={`products/:${productDetailParams.id}`} element={<ProductDetailPage />} />
     </Route>
