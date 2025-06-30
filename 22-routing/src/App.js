@@ -7,9 +7,12 @@ import {
 import HomePage from "./pages/Home";
 import ProductsPage from "./pages/Products";
 import RootLayout from "./pages/Root";
+import ErrorPage from "./pages/Error";
 
 const routeElements = createRoutesFromElements(
-  <Route>
+  <Route
+    errorElement={<ErrorPage/>}
+  >
     <Route
       path="/"
       element={<RootLayout/>}
@@ -17,6 +20,7 @@ const routeElements = createRoutesFromElements(
       <Route path="/" element={<HomePage />} />
       <Route path="/products" element={<ProductsPage />} />
     </Route>
+
   </Route>
 );
 

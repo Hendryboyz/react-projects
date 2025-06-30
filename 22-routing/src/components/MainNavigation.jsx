@@ -1,5 +1,5 @@
 import {routes} from "../utils/routes";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import classes from "./MainNavigation.module.css";
 
 export default function MainNavigation() {
@@ -9,7 +9,13 @@ export default function MainNavigation() {
         <ul className={classes.list}>
           {routes.map((route, i) => (
             <li key={route.name}>
-              <Link to={route.path}>{route.name}</Link>
+              <NavLink
+                to={route.path}
+                className={({isActive}) => isActive ? classes.active : undefined}
+                end={route.path === '/'}
+              >
+                {route.name}
+              </NavLink>
             </li>
           ))}
         </ul>
