@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom';
 import Layout from "./pages/Layout";
 import HomePage from "./pages/Home";
 import ErrorPage from "./pages/Error";
@@ -6,6 +6,7 @@ import EventsPage from "./pages/Events";
 import NewEventPage from "./pages/NewEvent";
 import EventDetailPage from "./pages/EventDetail";
 import EditEventPage from "./pages/EditEvent";
+import EventsNavigation from "./components/EventsNavigation";
 
 // Challenge / Exercise
 
@@ -29,6 +30,15 @@ import EditEventPage from "./pages/EditEvent";
 // 7. Output the ID of the selected event on the EventDetailPage
 // BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 
+function EventsLayout() {
+  return (
+    <>
+      <EventsNavigation />
+      <Outlet />
+    </>
+  );
+}
+
 let routes = [{
   path: '/',
   element: <Layout />,
@@ -40,6 +50,7 @@ let routes = [{
     },
     {
       path: '/events',
+      element: <EventsLayout />,
       children: [
         {
           index: true,
