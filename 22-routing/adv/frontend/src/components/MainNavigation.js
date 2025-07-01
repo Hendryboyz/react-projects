@@ -1,28 +1,26 @@
 import classes from './MainNavigation.module.css';
 import {NavLink} from "react-router-dom";
 
+const LINKS = [
+  {path: '', title: 'Home'},
+  {path: 'events', title: 'Events'},
+];
+
 function MainNavigation() {
   return (
     <header className={classes.header}>
       <nav>
         <ul className={classes.list}>
-          <li>
-            <NavLink
-              to='/'
-              end={false}
-              className={({isActive}) => isActive ? 'active' : null}
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to='events'
-              className={({isActive}) => isActive ? classes.active : null}
-            >
-              Events
-            </NavLink>
-          </li>
+          {LINKS.map(link => (
+            <li>
+              <NavLink
+                to={link.path}
+                className={({isActive}) => isActive ? classes.active : null}
+              >
+                {link.title}
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>
