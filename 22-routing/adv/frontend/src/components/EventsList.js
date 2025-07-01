@@ -1,10 +1,7 @@
 import classes from './EventsList.module.css';
 import {Link} from "react-router-dom";
+import {dateFormater} from "../utils";
 
-const dateFormater = new Intl.DateTimeFormat("zh-TW", {
-  dateStyle: 'full',
-  timeStyle: 'long',
-});
 
 function EventsList({ events }) {
   return (

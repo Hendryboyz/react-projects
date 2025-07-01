@@ -1,5 +1,6 @@
 import classes from './EventItem.module.css';
 import {Link} from "react-router-dom";
+import {dateFormater} from "../utils";
 
 function EventItem({ event }) {
   function startDeleteHandler() {
@@ -10,7 +11,7 @@ function EventItem({ event }) {
     <article className={classes.event}>
       <img src={event.image} alt={event.title} />
       <h1>{event.title}</h1>
-      <time>{event.date}</time>
+      <time>{dateFormater.format(event.date)}</time>
       <p>{event.description}</p>
       <menu className={classes.actions}>
         <Link to={`../${event.id}/edit`} relative>Edit</Link>
