@@ -1,4 +1,10 @@
 import classes from './EventsList.module.css';
+import {Link} from "react-router-dom";
+
+const dateFormater = new Intl.DateTimeFormat("zh-TW", {
+  dateStyle: 'full',
+  timeStyle: 'long',
+});
 
 function EventsList({ events }) {
   return (
@@ -7,13 +13,13 @@ function EventsList({ events }) {
       <ul className={classes.list}>
         {events.map((event) => (
           <li key={event.id} className={classes.item}>
-            <a href="...">
-              <img src={event.image} alt={event.title} />
+            <Link to={event.id} relative>
+              <img src={event.image} alt={event.title}/>
               <div className={classes.content}>
                 <h2>{event.title}</h2>
-                <time>{event.date}</time>
+                <time>{dateFormater.format(event.date)}</time>
               </div>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

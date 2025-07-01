@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
+import EventForm from "../components/EventForm";
 
 function NewEventPage() {
   return (
     <>
-      <p>Add a new event</p>
-      <Link to='..'>Cancel</Link>
+      <EventForm />
     </>
   );
 }

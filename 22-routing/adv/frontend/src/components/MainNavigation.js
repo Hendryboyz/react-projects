@@ -12,7 +12,7 @@ function MainNavigation() {
       <nav>
         <ul className={classes.list}>
           {LINKS.map(link => (
-            <li>
+            <li key={link.title}>
               <NavLink
                 to={link.path}
                 className={({isActive}) => isActive ? classes.active : null}
