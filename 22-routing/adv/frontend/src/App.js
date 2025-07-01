@@ -39,7 +39,7 @@ let routes = [{
       element: <HomePage />,
     },
     {
-      path: 'events',
+      path: '/events',
       children: [
         {
           index: true,
