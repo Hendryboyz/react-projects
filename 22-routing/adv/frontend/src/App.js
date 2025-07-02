@@ -23,6 +23,27 @@ let routes = [{
         {
           index: true,
           element: <EventsPage />,
+          loader: async () => {
+            try {
+              const resourceUrl = 'http://localhost:8080/events';
+              const resp = await fetch(resourceUrl, {
+                method: 'GET',
+              });
+              if (resp.ok) {
+                const data = await resp.json();
+                return {
+                  events: data.events,
+                  error: undefined,
+                };
+              }
+            } catch (e) {
+              console.error(e);
+              return {
+                events: [],
+                error: 'failed to fetch events',
+              };
+            }
+          },
         },
         {
           /**

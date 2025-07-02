@@ -1,10 +1,15 @@
 import EventsList from "../components/EventsList";
-import {DUMMY_EVENTS} from "../events";
+import {useLoaderData} from "react-router-dom";
 
 function EventsPage() {
+  // const [loading, setLoading] = useState(false);
+  // const [events, setEvents] = useState([]);
+  // const [error, setError] = useState(undefined);
+  const data = useLoaderData();
+
   return (
     <>
-      <EventsList events={DUMMY_EVENTS}/>
+      {data.events && <EventsList events={data.events}/>}
     </>
   );
 }
