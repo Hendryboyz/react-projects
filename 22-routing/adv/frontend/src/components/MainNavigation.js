@@ -15,7 +15,7 @@ function MainNavigation() {
             <li key={link.title}>
               <NavLink
                 to={link.path}
-                className={({isActive}) => isActive ? classes.active : null}
+                className={({isActive}) => isActive ? classes.active : undefined}
               >
                 {link.title}
               </NavLink>

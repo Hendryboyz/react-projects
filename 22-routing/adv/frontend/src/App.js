@@ -1,25 +1,15 @@
-import {createBrowserRouter, Outlet, RouterProvider} from 'react-router-dom';
-import Layout from "./pages/Layout";
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import {RootLayout, EventsLayout} from "./pages/Layout";
 import HomePage from "./pages/Home";
 import ErrorPage from "./pages/Error";
 import EventsPage from "./pages/Events";
 import NewEventPage from "./pages/NewEvent";
 import EventDetailPage from "./pages/EventDetail";
 import EditEventPage from "./pages/EditEvent";
-import EventsNavigation from "./components/EventsNavigation";
-
-function EventsLayout() {
-  return (
-    <>
-      <EventsNavigation />
-      <Outlet />
-    </>
-  );
-}
 
 let routes = [{
   path: '/',
-  element: <Layout />,
+  element: <RootLayout />,
   errorElement: <ErrorPage />,
   children: [
     {
@@ -35,6 +25,9 @@ let routes = [{
           element: <EventsPage />,
         },
         {
+          /**
+           * react router is smart enough to understand `new` isn't an :eventId because this route is more specific
+           */
           path: 'new',
           element: <NewEventPage />
         },
@@ -50,6 +43,7 @@ let routes = [{
     },
   ],
 }];
+
 const routers = createBrowserRouter(routes);
 
 function App() {
