@@ -1,17 +1,22 @@
-import {useParams} from "react-router-dom";
+import {useRouteLoaderData} from "react-router-dom";
 import EventItem from "../components/EventItem";
-import {DUMMY_EVENTS} from "../events";
+import {fetchContents} from "../utils";
 
 function EventDetailPage() {
-  const params = useParams();
-  const {eventId} = params;
-  const event = DUMMY_EVENTS.find(e => e.id === eventId);
+  const data = useRouteLoaderData('event-detail');
+  const {event} = data;
   return (
     <>
-      <div>this is event {eventId} detail page</div>
+      <h2>event {event.id} detail</h2>
       <EventItem event={event} />
     </>
   );
+}
+
+export async function loader({request, params}) {
+  const {eventId} = params;
+  const resourceUrl = `http://localhost:8080/events/${eventId}`;
+  return await fetchContents(resourceUrl);
 }
 
 export default EventDetailPage;

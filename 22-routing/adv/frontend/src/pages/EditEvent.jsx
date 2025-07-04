@@ -1,14 +1,12 @@
-import {useParams} from "react-router-dom";
+import {useRouteLoaderData} from "react-router-dom";
 import EventForm from "../components/EventForm";
-import {DUMMY_EVENTS} from "../events";
 
 function EditEventPage() {
-  const params = useParams();
-  const {eventId} = params;
-  const event = DUMMY_EVENTS.find(e => e.id === eventId);
+  const data = useRouteLoaderData('event-detail');
+  const {event} = data;
   return (
     <>
-      <div>try to edit event {eventId}</div>
+      <div>Edit event {event.id}</div>
       <EventForm event={event} method='PUT' />
     </>
   );

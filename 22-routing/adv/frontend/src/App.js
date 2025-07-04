@@ -4,7 +4,7 @@ import HomePage from "./pages/Home";
 import ErrorPage from "./pages/Error";
 import EventsPage, {loader as eventsLoader} from "./pages/Events";
 import NewEventPage from "./pages/NewEvent";
-import EventDetailPage from "./pages/EventDetail";
+import EventDetailPage, {loader as eventDetailLoader} from "./pages/EventDetail";
 import EditEventPage from "./pages/EditEvent";
 
 let routes = [{
@@ -34,11 +34,18 @@ let routes = [{
         },
         {
           path: ':eventId',
-          element: <EventDetailPage />,
-        },
-        {
-          path: ':eventId/edit',
-          element: <EditEventPage />,
+          id: 'event-detail',
+          loader: eventDetailLoader,
+          children: [
+            {
+              index: true,
+              element: <EventDetailPage />,
+            },
+            {
+              path: 'edit',
+              element: <EditEventPage />,
+            },
+          ],
         },
       ],
     },
