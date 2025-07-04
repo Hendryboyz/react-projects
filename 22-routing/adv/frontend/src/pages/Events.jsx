@@ -1,11 +1,15 @@
 import EventsList from "../components/EventsList";
-import {useLoaderData} from "react-router-dom";
+import {json, useLoaderData} from "react-router-dom";
 
 function EventsPage() {
   // const [loading, setLoading] = useState(false);
   // const [events, setEvents] = useState([]);
   // const [error, setError] = useState(undefined);
   const data = useLoaderData();
+
+  if (data.isError) {
+    return <p>{data.message}</p>
+  }
 
   return (
     <>
@@ -15,24 +19,38 @@ function EventsPage() {
 }
 
 export async function loader() {
+  // can not use React hook in loader but allow any browser api
   try {
     const resourceUrl = 'http://localhost:8080/events';
     const resp = await fetch(resourceUrl, {
       method: 'GET',
     });
     if (resp.ok) {
-      const data = await resp.json();
-      return {
-        events: data.events,
-        error: undefined,
-      };
+      return resp;
+    } else {
+      // throw new Response(
+      //   JSON.stringify({
+      //     isError: true,
+      //     message: 'failed to fetch events'
+      //   }),
+      //   {
+      //     status: 500,
+      //   },
+      // );
+      throw json({message: 'failed to fetch events'}, { status: 500 })
     }
   } catch (e) {
     console.error(e);
-    return {
-      events: [],
-      error: 'failed to fetch events',
-    };
+    // throw new Response(
+    //   JSON.stringify({
+    //     isError: true,
+    //     message: 'failed to fetch events'
+    //   }),
+    //   {
+    //     status: 500,
+    //   },
+    // );
+    throw json({message: 'failed to fetch events'}, { status: 500 })
   }
 }
 
