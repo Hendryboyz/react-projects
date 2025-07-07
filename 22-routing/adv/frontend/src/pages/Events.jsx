@@ -22,7 +22,7 @@ function EventsPage() {
 export async function loader({request, params}) {
   // can not use React hook in loader but allow any browser api
   const resourceUrl = 'http://localhost:8080/events';
-  return await fetchContents(resourceUrl);
+  return await fetchContents(resourceUrl, 'fail to fetch events');
 }
 
 export default EventsPage;

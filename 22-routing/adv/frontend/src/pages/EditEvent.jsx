@@ -7,7 +7,7 @@ function EditEventPage() {
   return (
     <>
       <div>Edit event {event.id}</div>
-      <EventForm event={event} method='PUT' />
+      <EventForm event={event} method='put' />
     </>
   );
 }

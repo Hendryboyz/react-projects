@@ -3,8 +3,11 @@ import {RootLayout, EventsLayout} from "./pages/Layout";
 import HomePage from "./pages/Home";
 import ErrorPage from "./pages/Error";
 import EventsPage, {loader as eventsLoader} from "./pages/Events";
-import NewEventPage from "./pages/NewEvent";
-import EventDetailPage, {loader as eventDetailLoader} from "./pages/EventDetail";
+import NewEventPage, {action as newEventAction} from "./pages/NewEvent";
+import EventDetailPage, {
+  loader as eventDetailLoader,
+  action as deleteEventAction,
+} from "./pages/EventDetail";
 import EditEventPage from "./pages/EditEvent";
 
 let routes = [{
@@ -30,7 +33,8 @@ let routes = [{
            * react router is smart enough to understand `new` isn't an :eventId because this route is more specific
            */
           path: 'new',
-          element: <NewEventPage />
+          element: <NewEventPage />,
+          action: newEventAction,
         },
         {
           path: ':eventId',
@@ -40,6 +44,7 @@ let routes = [{
             {
               index: true,
               element: <EventDetailPage />,
+              action: deleteEventAction,
             },
             {
               path: 'edit',

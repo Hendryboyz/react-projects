@@ -3,7 +3,7 @@ export const dateFormater = new Intl.DateTimeFormat("zh-TW", {
   timeStyle: 'long',
 });
 
-export const fetchContents = async (resourceUrl) => {
+export const fetchContents = async (resourceUrl, errorMessage) => {
   try {
     const resp = await fetch(resourceUrl, {
       method: 'GET',
@@ -11,10 +11,10 @@ export const fetchContents = async (resourceUrl) => {
     if (resp.ok) {
       return resp;
     } else {
-      throw Response.json({message: 'failed to fetch events'}, { status: 500 })
+      throw Response.json({message: errorMessage}, { status: 500 })
     }
   } catch (e) {
     console.error(e);
-    throw Response.json({message: 'failed to fetch events'}, { status: 500 })
+    throw Response.json({message: errorMessage}, { status: 500 })
   }
 }

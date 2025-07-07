@@ -1,6 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import {Form, useNavigate} from 'react-router-dom';
 
 import classes from './EventForm.module.css';
+// import {useActionState} from "react";
+
+const INITIAL_EVENT = {
+  title: '',
+  description: '',
+  date: new Date(),
+  image: null,
+};
 
 function EventForm({ method, event }) {
   const navigate = useNavigate();
@@ -8,8 +16,19 @@ function EventForm({ method, event }) {
     navigate('..', { relative: 'path' });
   }
 
+  // function submitEventHandler(prevState, formData) {
+  //   console.log(prevState);
+  //   console.log(formData.values());
+  // }
+  //
+  // const [state, formAction] = useActionState(
+  //   submitEventHandler,
+  //   event || INITIAL_EVENT,
+  //   undefined
+  // );
+
   return (
-    <form className={classes.form}>
+    <Form className={classes.form} method={method}>
       <p>
         <label htmlFor="title">Title</label>
         <input
@@ -17,7 +36,7 @@ function EventForm({ method, event }) {
           type="text"
           name="title"
           required
-          defaultValue={event ? event.title : ''}
+          defaultValue={event?.title || INITIAL_EVENT.title}
         />
       </p>
       <p>
@@ -27,8 +46,8 @@ function EventForm({ method, event }) {
           type="url"
           name="image"
           required
-          defaultValue={event ? event.image : null}
-        />/>
+          defaultValue={event?.image || INITIAL_EVENT.image}
+        />
       </p>
       <p>
         <label htmlFor="date">Date</label>
@@ -37,7 +56,7 @@ function EventForm({ method, event }) {
           type="date"
           name="date"
           required
-          defaultValue={event ? event.date : ''}
+          defaultValue={event?.date || INITIAL_EVENT.date}
         />
       </p>
       <p>
@@ -47,7 +66,7 @@ function EventForm({ method, event }) {
           name="description"
           rows="5"
           required
-          defaultValue={event ? event.description : ''}
+          defaultValue={event?.description || INITIAL_EVENT.description}
         />
       </p>
       <div className={classes.actions}>
@@ -56,7 +75,7 @@ function EventForm({ method, event }) {
         </button>
         <button>Save</button>
       </div>
-    </form>
+    </Form>
   );
 }
 
