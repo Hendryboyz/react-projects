@@ -10,6 +10,7 @@ import EventDetailPage, {
 } from "./pages/EventDetail";
 import { action as manipulateEventAction } from './components/EventForm';
 import EditEventPage from "./pages/EditEvent";
+import NewsletterPage, {action as signupNewsletterAction} from "./pages/Newsletter";
 
 let routes = [{
   path: '/',
@@ -56,6 +57,11 @@ let routes = [{
         },
       ],
     },
+    {
+      path: '/newsletter',
+      element: <NewsletterPage />,
+      action: signupNewsletterAction,
+    }
   ],
 }];
 
