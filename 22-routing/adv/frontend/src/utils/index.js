@@ -9,7 +9,9 @@ export const fetchContents = async (resourceUrl, errorMessage) => {
       method: 'GET',
     });
     if (resp.ok) {
-      return resp;
+      // use `defer()` require to parse json manually
+      const json = await resp.json();
+      return json.events;
     } else {
       throw Response.json({message: errorMessage}, { status: 500 })
     }

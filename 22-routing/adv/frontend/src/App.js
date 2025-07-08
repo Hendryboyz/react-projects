@@ -58,7 +58,7 @@ let routes = [{
       ],
     },
     {
-      path: '/newsletter',
+      path: 'newsletter',
       element: <NewsletterPage />,
       action: signupNewsletterAction,
     }
