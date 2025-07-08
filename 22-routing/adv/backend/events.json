@@ -1,11 +1,1 @@
-{
-  "events": [
-    {
-      "id": "e1",
-      "title": "A dummy event",
-      "date": "2023-02-22",
-      "image": "https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg",
-      "description": "Join this amazing event and connect with fellow developers."
-    }
-  ]
-}
+{"events":[{"title":"Dragon Boat Festival","description":"Dragon Boat Festival nice day","date":"2025-05-31","image":"https://www.china-admissions.com/wp-content/uploads/2022/05/dragon-boat.jpeg","id":"1898022b-5ec3-4b0e-ac07-38239d5cdb77"},{"title":"ThanksGiving event","description":"Join this amazing event and connect with fellow developers.","date":"1999-09-09","image":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Our_%28Almost_Traditional%29_Thanksgiving_Dinner.jpg/960px-Our_%28Almost_Traditional%29_Thanksgiving_Dinner.jpg","id":"09d807af-73d8-4131-bfb1-e69d8a73a1cf"},{"id":"e1","title":"A dummy event","date":"2023-02-22","image":"https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg","description":"Join this amazing event and connect with fellow developers."}]}
