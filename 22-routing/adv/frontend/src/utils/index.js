@@ -3,6 +3,12 @@ export const dateFormater = new Intl.DateTimeFormat("zh-TW", {
   timeStyle: 'long',
 });
 
+export async function loadEvents() {
+  const resourceUrl = 'http://localhost:8080/events';
+  const responseData = await fetchContents(resourceUrl, 'fail to fetch events');
+  return responseData.events;
+}
+
 export const fetchContents = async (resourceUrl, errorMessage) => {
   try {
     const resp = await fetch(resourceUrl, {
@@ -10,8 +16,7 @@ export const fetchContents = async (resourceUrl, errorMessage) => {
     });
     if (resp.ok) {
       // use `defer()` require to parse json manually
-      const json = await resp.json();
-      return json.events;
+      return await resp.json();
     } else {
       throw Response.json({message: errorMessage}, { status: 500 })
     }

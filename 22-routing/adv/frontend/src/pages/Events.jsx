@@ -1,6 +1,6 @@
 import EventsList from "../components/EventsList";
 import {Await, useLoaderData} from "react-router-dom";
-import {fetchContents} from "../utils";
+import {loadEvents} from "../utils";
 import {Suspense} from "react";
 
 function EventsPage() {
@@ -24,17 +24,13 @@ function EventsPage() {
     }>
       <Await resolve={events}>
         {(loadedEvents) => (
-          <EventsList events={loadedEvents} />
+          <EventsList events={loadedEvents} showTitle={true} />
         )}
       </Await>
     </Suspense>
   );
 }
 
-async function loadEvents() {
-  const resourceUrl = 'http://localhost:8080/events';
-  return await fetchContents(resourceUrl, 'fail to fetch events');
-}
 
 export function loader({request, params}) {
   // can not use React hook in loader but allow any browser api
