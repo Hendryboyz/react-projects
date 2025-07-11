@@ -25,7 +25,6 @@ export async function action({request}) {
     email: data.get('email'),
     password: data.get('password'),
   }
-
   const resourceUrl = getRequestUrl(pageMode);
 
   const resp = await fetch(resourceUrl, {
