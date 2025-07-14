@@ -1,9 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import {Form, NavLink, useRouteLoaderData} from 'react-router-dom';
 
 import classes from './MainNavigation.module.css';
 import NewsletterSignup from './NewsletterSignup';
 
 function MainNavigation() {
+  const token = useRouteLoaderData('root');
   return (
     <header className={classes.header}>
       <nav>
@@ -11,7 +12,7 @@ function MainNavigation() {
           <li>
             <NavLink
               to="/"
-              className={({ isActive }) =>
+              className={({isActive}) =>
                 isActive ? classes.active : undefined
               }
               end
@@ -22,7 +23,7 @@ function MainNavigation() {
           <li>
             <NavLink
               to="/events"
-              className={({ isActive }) =>
+              className={({isActive}) =>
                 isActive ? classes.active : undefined
               }
             >
@@ -32,26 +33,35 @@ function MainNavigation() {
           <li>
             <NavLink
               to="/newsletter"
-              className={({ isActive }) =>
+              className={({isActive}) =>
                 isActive ? classes.active : undefined
               }
             >
               Newsletter
             </NavLink>
           </li>
-          <li>
-          <NavLink
-            to="/auth?mode=signin"
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-          >
-            Sign-In
-          </NavLink>
-        </li>
+          {!token && (
+            <li>
+              <NavLink
+                to="/auth?mode=signin"
+                className={({isActive}) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Sign-In
+              </NavLink>
+            </li>
+          )}
+          {token && (
+            <li>
+              <Form action='/logout' method='post'>
+                <button>Logout</button>
+              </Form>
+            </li>
+          )}
         </ul>
       </nav>
-      <NewsletterSignup />
+      <NewsletterSignup/>
     </header>
   );
 }

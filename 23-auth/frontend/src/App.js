@@ -14,18 +14,26 @@ import RootLayout from './pages/Root';
 import { action as manipulateEventAction } from './components/EventForm';
 import NewsletterPage, { action as newsletterAction } from './pages/Newsletter';
 import Authentication, {action as authAction} from "./pages/Authentication";
+import {action as logoutAction} from './pages/Logout';
+import {tokenLoader} from "./utils";
 
 const router = createBrowserRouter([
   {
+    id: 'root',
     path: '/',
     element: <RootLayout />,
     errorElement: <ErrorPage />,
+    loader: tokenLoader,
     children: [
       { index: true, element: <HomePage /> },
       {
         path: 'auth',
         element: <Authentication />,
         action: authAction,
+      },
+      {
+        path: 'logout',
+        action: logoutAction,
       },
       {
         path: 'events',
