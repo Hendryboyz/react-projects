@@ -44,6 +44,11 @@ export async function action({request}) {
   } else {
     const {token} = await resp.json();
     localStorage.setItem('access_token', token);
+
+    const expiration = new Date();
+    expiration.setHours(expiration.getHours() + 1);
+    localStorage.setItem('auth_expiration', expiration.toISOString());
+
     return redirect('/');
   }
 }
