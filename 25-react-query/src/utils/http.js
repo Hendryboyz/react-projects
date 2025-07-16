@@ -1,9 +1,13 @@
 import {QueryClient} from "@tanstack/react-query";
 
+const BACKEND_FQDN = 'http://localhost:3000/';
+
+export const getImageUrl = (path) => BACKEND_FQDN + path;
+
 export const queryClient = new QueryClient();
 
 export async function fetchEvents({signal, searchTerm}) {
-  let resourceUrl = 'http://localhost:3000/events';
+  let resourceUrl = BACKEND_FQDN + 'events';
   if (searchTerm) {
     resourceUrl += `?search=${searchTerm}`;
   }
@@ -22,7 +26,7 @@ export async function fetchEvents({signal, searchTerm}) {
 }
 
 export async function createNewEvent(eventData) {
-  let resourceUrl = 'http://localhost:3000/events';
+  let resourceUrl = BACKEND_FQDN + 'events';
   const response = await fetch(resourceUrl, {
     method: 'POST',
     body: JSON.stringify(eventData),
@@ -43,7 +47,7 @@ export async function createNewEvent(eventData) {
 }
 
 export async function fetchSelectableImages({ signal }) {
-  const response = await fetch(`http://localhost:3000/events/images`, { signal });
+  const response = await fetch(`${BACKEND_FQDN}events/images`, { signal });
 
   if (!response.ok) {
     const error = new Error('An error occurred while fetching the images');
@@ -55,4 +59,34 @@ export async function fetchSelectableImages({ signal }) {
   const { images } = await response.json();
 
   return images;
+}
+
+export async function fetchEvent({ id, signal }) {
+  const response = await fetch(`${BACKEND_FQDN}events/${id}`, { signal });
+
+  if (!response.ok) {
+    const error = new Error('An error occurred while fetching the event');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const { event } = await response.json();
+
+  return event;
+}
+
+export async function deleteEvent({ id }) {
+  const response = await fetch(`${BACKEND_FQDN}events/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const error = new Error('An error occurred while deleting the event');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return response.json();
 }
