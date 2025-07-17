@@ -1,9 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import Modal from '../UI/Modal.jsx';
 import EventForm from './EventForm.jsx';
 
 export default function EditEvent() {
+  const {id: eventId} = useParams();
   const navigate = useNavigate();
 
   function handleSubmit(formData) {}
