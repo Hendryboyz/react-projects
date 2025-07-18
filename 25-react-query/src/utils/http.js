@@ -6,10 +6,17 @@ export const getImageUrl = (path) => BACKEND_FQDN + path;
 
 export const queryClient = new QueryClient();
 
-export async function fetchEvents({signal, searchTerm}) {
+export async function fetchEvents({signal, searchTerm, limit}) {
   let resourceUrl = BACKEND_FQDN + 'events';
+  const queries = [];
   if (searchTerm) {
-    resourceUrl += `?search=${searchTerm}`;
+    queries.push(`search=${searchTerm}`);
+  }
+  if (limit) {
+    queries.push(`max=${limit}`);
+  }
+  if (queries.length > 0) {
+    resourceUrl += '?' + queries.join('&');
   }
   const response = await fetch(resourceUrl, {signal: signal});
 

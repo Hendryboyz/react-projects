@@ -7,8 +7,8 @@ import {fetchEvents} from "../../utils/http.js";
 
 export default function NewEventsSection() {
   const { data, isPending, isError, error} = useQuery({
-    queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryKey: ['events', { limit: 3 }],
+    queryFn: ({signal, queryKey}) => fetchEvents({signal, ...queryKey[1]}),
     staleTime: 0, // wait `staleTime` milliseconds to query behind the scene
     // garbage collection time determine how long the cache would be kept around
     // gcTime: Infinity,
