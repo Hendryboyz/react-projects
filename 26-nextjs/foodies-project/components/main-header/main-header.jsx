@@ -3,6 +3,7 @@ import logo from "@/assets/logo.png";
 import styles from './main-header.module.css';
 import Image from "next/image";
 import MainHeaderBackground from "./main-header-background";
+import NavLink from "@/components/main-header/nav-link";
 
 const routes = [
   {
@@ -27,7 +28,9 @@ export default function MainHeader() {
         <nav className={styles.nav}>
           <ul>
             {routes.map((route) => (
-              <li key={route.path}><Link href={route.path}>{route.title}</Link></li>
+              <li key={route.path}>
+                <NavLink routePath={route.path}>{route.title}</NavLink>
+              </li>
             ))}
           </ul>
         </nav>
