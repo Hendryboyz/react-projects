@@ -6,6 +6,7 @@ import {Suspense} from "react";
 import MealsLoadingPage from "@/app/meals/loading-fallback";
 
 async function Meals() {
+  console.log("hi meal page");
   const meals = await getMeals();
   return <MealsGrid meals={meals} />;
 }
