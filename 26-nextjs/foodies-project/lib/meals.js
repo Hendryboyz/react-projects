@@ -1,8 +1,12 @@
 import fs from "node:fs";
-
+import { S3 } from "@aws-sdk/client-s3";
 import sql from 'better-sqlite3';
 import slugify from "slugify";
 import xss from "xss";
+
+const s3 = new S3({
+  region: 'us-east-1',
+});
 
 const db = sql('meals.db');
 
@@ -47,4 +51,19 @@ async function writeImage(meal) {
 
   // all request to the image will be sent to public/ folder automatically
   meal.image = `/images/${fileName}`;
+}
+
+async function uploadS3(meal) {
+  const extension = meal.image.name.split('.').pop();
+  const fileName = `${meal.slug}.${extension}`
+
+  const bufferedImage = await meal.image.arrayBuffer();
+  s3.putObject({
+    Bucket: '',
+    Key: fileName,
+    Body: Buffer.from(bufferedImage),
+    ContentType: meal.image.type,
+  });
+
+  meal.image = fileName;
 }
