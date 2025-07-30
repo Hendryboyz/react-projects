@@ -2,6 +2,22 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import {getMeal} from "@/lib/meals";
 import {notFound} from "next/navigation";
+
+// generate 'dynamic
+export async function generateMetadata({ params }) {
+  const {slug} = params;
+  const meal = await getMeal(slug);
+
+  if (!meal) {
+    notFound();
+  }
+
+  return {
+    title: meal.title,
+    description: meal.summary,
+  }
+}
+
 export default async function MealDetailsPage({ params }) {
   const {slug} = params;
   const meal = await getMeal(slug);

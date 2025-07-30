@@ -4,8 +4,8 @@ const nextConfig = {
     remotePatterns:[
       {
         protocol: 'https',
-        hostname: '127.0.0.1',
-        port: 'random-access-henrychou.s3.ap-northeast-1.amazonaws.com',
+        hostname: 'random-access-henrychou.s3.ap-northeast-1.amazonaws.com',
+        port: '',
         pathname: '/**',
       },
     ],
