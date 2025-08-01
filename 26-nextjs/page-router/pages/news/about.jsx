@@ -1,5 +1,5 @@
-export default function DetailsPage() {
+export default function NewsAboutPage() {
   return (
-    <h1>the news details page</h1>
+    <h1>the news about page</h1>
   );
 }
