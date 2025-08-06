@@ -1,5 +1,6 @@
 import MeetupList from "../components/meetups/MeetupList";
 import {useEffect, useState} from "react";
+import {listMeetup} from "./api/meetups";
 
 const DUMMY_MEETUPS = [
   {
@@ -18,10 +19,17 @@ const DUMMY_MEETUPS = [
   },
 ];
 
-export function getStaticProps() {
+export async function getStaticProps() {
+  const meetupDocuments = await listMeetup();
   return {
     props: {
-      meetups: DUMMY_MEETUPS,
+      meetups: meetupDocuments.map(doc => ({
+        id: doc._id.toString(),
+        title: doc.title,
+        address: doc.address,
+        image: doc.image,
+        description: doc.description,
+      })),
     },
     revalidate: 10,
   };

@@ -19,23 +19,37 @@ function createMongoClient() {
 
 const mongoClient = createMongoClient();
 
-async function createMeetup({title, image, address, description}) {
+export async function listMeetup() {
+  return await accessMeetupCollection(async (meetupCollection) => {
+    const meetups = await meetupCollection.find().toArray();
+
+    console.log(meetups);
+    return meetups;
+  });
+}
+
+async function accessMeetupCollection(actionFn) {
   const conn = await mongoClient.connect();
   try {
     const db = conn.db();
     const meetupCollection = db.collection(database);
-
-    const result =
-      await meetupCollection.insertOne({ title, image, address, description });
-
-    console.log(result);
-    return result.insertedId;
+    return await actionFn(meetupCollection);
   } catch (error) {
     console.error(error);
     return undefined;
   } finally {
     await conn.close();
   }
+}
+
+async function createMeetup({title, image, address, description}) {
+  return await accessMeetupCollection(async (meetupCollection) => {
+    const result =
+      await meetupCollection.insertOne({ title, image, address, description });
+
+    console.log(result);
+    return result.insertedId;
+  });
 }
 
 async function handler(req, res) {
