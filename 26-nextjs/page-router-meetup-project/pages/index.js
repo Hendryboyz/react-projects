@@ -1,5 +1,7 @@
-import MeetupList from "../components/meetups/MeetupList";
 import {useEffect, useState} from "react";
+import Head from "next/head";
+
+import MeetupList from "../components/meetups/MeetupList";
 import {listMeetup} from "./api/meetups";
 
 const DUMMY_MEETUPS = [
@@ -46,6 +48,15 @@ export async function getStaticProps() {
 
 export default function Home(props) {
   return (
-    <MeetupList meetups={props.meetups} />
+    <>
+      <Head>
+        <title>React Meetups</title>
+        <meta
+          name="description"
+          content="Browse a huge list of highly active React Meetups"
+        />
+      </Head>
+      <MeetupList meetups={props.meetups} />
+    </>
   );
 }

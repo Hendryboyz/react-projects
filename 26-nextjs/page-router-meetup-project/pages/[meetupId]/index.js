@@ -1,4 +1,6 @@
 import {useRouter} from "next/router";
+import Head from "next/head";
+import {Fragment} from "react";
 import MeetupDetail from "../../components/meetups/MeetupDetail";
 import {getMeetup, getMeetupIds} from "../api/meetups";
 
@@ -43,6 +45,15 @@ export default function MeetupDetailsPage(props) {
   // const router = useRouter();
   // const {meetupId} = router.query;
   return (
-    <MeetupDetail {...props.meetup} />
+    <Fragment>
+      <Head>
+        <title>{props.meetup.title}</title>
+        <meta
+          name="description"
+          content={props.meetup.description}
+        />
+      </Head>
+      <MeetupDetail {...props.meetup} />
+    </Fragment>
   );
 }
