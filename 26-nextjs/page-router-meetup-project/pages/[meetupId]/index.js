@@ -17,11 +17,11 @@ export async function getStaticPaths() {
      *
      * the 404 error will return to the user
      */
-    fallback: false,
+    // fallback: false,
     /**
      * allow to pre-generate some of the pages, the missing meetupId will generate the page dynamically
      */
-    // fallback: true,
+    fallback: true,
   };
 }
 
