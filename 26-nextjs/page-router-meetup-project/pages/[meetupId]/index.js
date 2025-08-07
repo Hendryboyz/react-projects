@@ -19,9 +19,14 @@ export async function getStaticPaths() {
      */
     // fallback: false,
     /**
-     * allow to pre-generate some of the pages, the missing meetupId will generate the page dynamically
+     * allow to pre-generate some of the pages, the missing meetupId will return empty page immediately
+     * then pull down the dynamically generated content
      */
-    fallback: true,
+    // fallback: true,
+    /**
+     * user will not see anything until the page was pre-generated
+     */
+    fallback: 'blocking',
   };
 }
 
