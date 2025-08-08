@@ -1,5 +1,6 @@
 'use server';
 import fs from 'node:fs';
+import fsPromise from 'node:fs/promises';
 
 export async function saveUserAction(formData) {
   console.debug("server action executed")
@@ -13,4 +14,9 @@ export async function saveUserAction(formData) {
 
   instructors.push(newInstructor);
   fs.writeFileSync('dummy-db.json', JSON.stringify(instructors));
+}
+
+export async function fetchDummyUserData() {
+  const data = await fsPromise.readFile('dummy-db.json', 'utf-8');
+  return JSON.parse(data);
 }

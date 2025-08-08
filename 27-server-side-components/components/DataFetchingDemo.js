@@ -1,8 +1,7 @@
-import fs from 'node:fs/promises';
+import {fetchDummyUserData} from "@/actions";
 
 export default async function DataFetchingDemo() {
-  const data = await fs.readFile('dummy-db.json', 'utf-8');
-  const users = JSON.parse(data);
+  const users = await fetchDummyUserData();
 
   return (
     <div className="rsc">
