@@ -1,5 +1,34 @@
+import Accordion from "./components/Accordion/index.jsx";
+import AccordionItem from "./components/Accordion/Item.jsx";
+
 function App() {
-  return <h1>React Patterns & Practices</h1>;
+  return (
+    <main>
+      <section>
+        <h2>Why work with us?</h2>
+        <Accordion className="accordion">
+          <AccordionItem
+            id="item1"
+            className="accordion-item"
+            title="We got 20 years of experience">
+            <article>
+              <p>You can&apos;t go wrong with us.</p>
+              <p>We are in the business of planning highly individualized vacation trips for more than 20 years</p>
+            </article>
+          </AccordionItem>
+          <AccordionItem
+            id="item2"
+            className="accordion-item"
+            title="We'r working with local guides">
+            <article>
+              <p>You are not doing the alone from our office.</p>
+              <p>Instead, we are working with local guides to ensure a safe and pleasant vacation.</p>
+            </article>
+          </AccordionItem>
+        </Accordion>
+      </section>
+    </main>
+  );
 }
 
 export default App;
