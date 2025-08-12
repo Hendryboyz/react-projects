@@ -1,4 +1,5 @@
 import {useRef, useState} from "react";
+import * as _ from 'lodash';
 
 export default function SearchableList({items, itemKeyFn, children}) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,12 +17,14 @@ export default function SearchableList({items, itemKeyFn, children}) {
 
   function handleChange(event) {
     if (lastChange.current) {
-      clearTimeout(lastChange.current);
+      lastChange.current?.cancel();
     }
-    lastChange.current = setTimeout(() => {
-      lastChange.current = null;
+    const debounced = _.debounce(() => {
       setSearchTerm(event.target.value);
+      lastChange.current = null;
     }, 500);
+    debounced();
+    lastChange.current = debounced;
   }
 
   return (
