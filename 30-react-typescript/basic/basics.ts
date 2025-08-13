@@ -46,3 +46,15 @@ addFunction = function add(a: number, b: number): number {
 function printOutput(value: any): void {
   console.log(value);
 }
+
+// Generics feature
+function insertAtFirst<T>(array: T[], val: T): T[] {
+  return [val, ...array];
+}
+
+const demoArray = [1, 2, 3, 4, 5];
+const updatedArray = insertAtFirst<number>(demoArray, -1);
+const stringArray = insertAtFirst(['a', 'b', 'c'], 'd')
+if (stringArray.length > 0 && stringArray[0]) {
+  const aString = stringArray[0].split(',')
+}
