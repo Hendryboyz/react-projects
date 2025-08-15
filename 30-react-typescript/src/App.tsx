@@ -15,10 +15,15 @@ function App() {
       return [...prevTodos, new Todo(todoContent)];
     })
   }
+
+  function removeTodoHandler(todoContent: string) {
+    setTodos((prevTodos) =>
+      prevTodos.filter(todo => todo.text !== todoContent));
+  }
   return (
     <>
       <NewTodo onAddTodo={addTodoHandler} />
-      <Todos items={todos} />
+      <Todos items={todos} onFinishItem={removeTodoHandler} />
     </>
   )
 }
