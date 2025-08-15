@@ -13,7 +13,7 @@ const Todos: React.FC<TodoProps> = (props) => {
   return (
     <ul className={classes.todos}>
       {props.items.map((item, i) =>
-        <TodoItem key={item.id + i} content={item.text} onFinishItem={props.onFinishItem} />)}
+        <TodoItem key={item.id + i} content={item.text} onFinishItem={props.onFinishItem.bind(null, item.text)} />)}
     </ul>
   );
 }
