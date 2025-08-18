@@ -1,11 +1,9 @@
-import React, {useRef} from "react";
+import React, {useContext, useRef} from "react";
 import classes from './NewTodo.module.css';
+import {TodoContext} from "../store/TodoContext.tsx";
 
-type NewTodoProps = {
-  onAddTodo: (text: string) => void;
-};
-
-const NewTodo: React.FC<NewTodoProps> = (props) => {
+const NewTodo: React.FC = () => {
+  const { addTodo } = useContext(TodoContext);
   const todoText = useRef<HTMLInputElement>(null);
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
@@ -16,7 +14,7 @@ const NewTodo: React.FC<NewTodoProps> = (props) => {
     // !(exclamation mark) means the null value is impossible
     const enteredText = todoText.current!.value;
     console.log(enteredText);
-    props.onAddTodo(enteredText);
+    addTodo(enteredText);
     todoText.current!.value = '';
   }
 
