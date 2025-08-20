@@ -1,0 +1,1 @@
+describe('Async component', () => {})
