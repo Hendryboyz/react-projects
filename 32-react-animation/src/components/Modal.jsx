@@ -11,10 +11,11 @@ export default function Modal({ title, children, onClose }) {
         variants={{
           hidden: hiddenAnimationState,
           visible: { opacity: 1, y: 0 },
+          exit: hiddenAnimationState
         }}
         animate='visible'
         // disappearance attr that is not supported by vanilla CSS
-        exit='hidden'
+        exit='exit'
         open
         className="modal"
       >
