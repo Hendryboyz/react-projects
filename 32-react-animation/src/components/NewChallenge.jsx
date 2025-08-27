@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from 'react';
-import { motion } from "framer-motion";
+import {motion, stagger, useAnimate} from "framer-motion";
 import { ChallengesContext } from '../store/challenges-context.jsx';
 import Modal from './Modal.jsx';
 import images from '../assets/images.js';
@@ -8,6 +8,10 @@ export default function NewChallenge({ onDone }) {
   const title = useRef();
   const description = useRef();
   const deadline = useRef();
+
+  // scope is a ref
+  // animation is a function to trigger certain animation
+  const [scope, animate] = useAnimate();
 
   const [selectedImage, setSelectedImage] = useState(null);
   const { addChallenge } = useContext(ChallengesContext);
@@ -31,6 +35,13 @@ export default function NewChallenge({ onDone }) {
       !challenge.deadline.trim() ||
       !challenge.image
     ) {
+      animate('input, textarea', {
+        x: [-5, 0, 5, 0],
+      }, {
+        type: 'linear',
+        duration: 0.1,
+        delay: stagger(0.05),
+      });
       return;
     }
 
@@ -40,7 +51,7 @@ export default function NewChallenge({ onDone }) {
 
   return (
     <Modal title="New Challenge" onClose={onDone}>
-      <form id="new-challenge" onSubmit={handleSubmit}>
+      <form id="new-challenge" onSubmit={handleSubmit} ref={scope}>
         <p>
           <label htmlFor="title">Title</label>
           <input ref={title} type="text" name="title" id="title" />
@@ -81,7 +92,7 @@ export default function NewChallenge({ onDone }) {
           <button type="button" onClick={onDone}>
             Cancel
           </button>
-          <button>Add Challenge</button>
+          <button type="submit">Add Challenge</button>
         </p>
       </form>
     </Modal>
