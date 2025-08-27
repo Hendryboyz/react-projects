@@ -45,6 +45,8 @@ export default function Challenges() {
           {displayedChallenges.length > 0 && (
             <motion.ol
               key="list" // key attrs require for multiple children in <AnimatePresence>
+              initial={{opacity: 0, y: -30}}
+              animate={{opacity: 1, y: 0}}
               exit={{ y: -30, opacity: 0 }}
               className="challenge-items"
             >
