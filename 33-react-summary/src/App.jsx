@@ -1,6 +1,7 @@
 import PostList from "./components/PostList.jsx";
 import NewPost from "./components/NewPost.jsx";
 import {useState} from "react";
+import Modal from "./components/Modal.jsx";
 
 const DEFAULT_POSTS = [
   {
@@ -16,6 +17,7 @@ const DEFAULT_POSTS = [
 // the function that return JXS code is React function component
 function App() {
   const [posts, setPosts] = useState(DEFAULT_POSTS);
+  const [isModalVisible, setIsModalVisible] = useState(true);
 
   function handleNewPostSubmit(author, content) {
     if (!author || !content) return;
@@ -26,9 +28,17 @@ function App() {
     }]);
   }
 
+  function handleModalClose() {
+    setIsModalVisible(false);
+  }
+
   return (
     <main>
-      <NewPost onPostSubmit={handleNewPostSubmit} />
+      {isModalVisible && (
+        <Modal onModalClose={handleModalClose}>
+          <NewPost onPostSubmit={handleNewPostSubmit} />
+        </Modal>
+      )}
       <PostList posts={posts} />
     </main>
   );
