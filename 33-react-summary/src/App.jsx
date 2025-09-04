@@ -23,10 +23,10 @@ function App() {
   function handleNewPostSubmit(author, content) {
     if (!author || !content) return;
 
-    setPosts(prevPosts => [...prevPosts, {
+    setPosts(prevPosts => [{
       author,
       content,
-    }]);
+    }, ...prevPosts]);
     handleModalClose();
   }
 

@@ -7,8 +7,10 @@ function NewPost({onPostSubmit, onCancel}) {
 
   function postSubmitHandler(e) {
     e.preventDefault();
-    if (!nameRef.current || !bodyRef.current) return;
-
+    if (!nameRef.current || !bodyRef.current) {
+      console.error("missing required fields to create new post");
+      return;
+    }
     onPostSubmit(nameRef.current.value, bodyRef.current.value);
   }
 
