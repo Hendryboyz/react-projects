@@ -1,7 +1,7 @@
 import {useRef} from "react";
 import styles from './new-post.module.css'
 
-function NewPost({onPostSubmit}) {
+function NewPost({onPostSubmit, onCancel}) {
   const nameRef = useRef(null);
   const bodyRef = useRef(null);
 
@@ -23,6 +23,7 @@ function NewPost({onPostSubmit}) {
         <input required type="text" id="name" ref={nameRef} />
       </p>
       <p className={styles.actions}>
+        <button type='button' onClick={onCancel}>Cancel</button>
         <button type='submit'>Submit</button>
       </p>
     </form>
