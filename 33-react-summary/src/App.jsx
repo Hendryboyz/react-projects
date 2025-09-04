@@ -17,7 +17,7 @@ const DEFAULT_POSTS = [
 
 // the function that return JXS code is React function component
 function App() {
-  const [posts, setPosts] = useState(DEFAULT_POSTS);
+  const [posts, setPosts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   function handleNewPostSubmit(author, content) {
