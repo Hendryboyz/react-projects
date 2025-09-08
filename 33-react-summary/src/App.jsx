@@ -1,8 +1,6 @@
 import PostList from "./components/PostList.jsx";
-import NewPost from "./components/NewPost.jsx";
-import {useEffect, useState} from "react";
-import Modal from "./components/Modal.jsx";
-import MainHeader from "./components/MainHeader.jsx";
+import {useContext, useEffect, useState} from "react";
+import {PostsContext} from "./store/PostsContext.jsx";
 
 const DEFAULT_POSTS = [
   {
@@ -17,9 +15,8 @@ const DEFAULT_POSTS = [
 
 // the function that return JXS code is React function component
 function App() {
-  const [posts, setPosts] = useState([]);
+  const {setPosts} = useContext(PostsContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -35,45 +32,13 @@ function App() {
       setIsLoading(false);
     }
     fetchPosts();
-  }, [/* only the deps change will trigger the useEffect() function be executed again */]);
+  }, [setPosts]); /* only the deps change will trigger the useEffect() function be executed again */
 
-  function handleNewPostSubmit(author, content) {
-    if (!author || !content) return;
-    fetch('http://localhost:8080/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        author,
-        content,
-      }),
-    })
-    setPosts(prevPosts => [{
-      author,
-      content,
-    }, ...prevPosts]);
-    handleModalClose();
-  }
-
-  function handleModalClose() {
-    setIsModalVisible(false);
-  }
-
-  function handleModalShow() {
-    setIsModalVisible(true);
-  }
 
   return (
     <>
-      <MainHeader onCreatePost={handleModalShow} />
       <main>
-        {isModalVisible && (
-          <Modal onModalClose={handleModalClose}>
-            <NewPost onPostSubmit={handleNewPostSubmit} onCancel={handleModalClose} />
-          </Modal>
-        )}
-        {!isLoading && <PostList posts={posts} />}
+        {!isLoading && <PostList />}
         {isLoading && (
           <div style={{ textAlign: "center", color: "white" }}>
             <p>Loading posts...</p>

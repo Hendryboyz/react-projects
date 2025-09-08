@@ -1,7 +1,10 @@
 import Post from "./Post.jsx";
 import styles from "./postlist.module.css";
+import {useContext} from "react";
+import {PostsContext} from "../store/PostsContext.jsx";
 
-function PostList({posts}) {
+function PostList() {
+  const {posts} = useContext(PostsContext)
   return (
     <>
       {posts && posts.length > 0 && (
