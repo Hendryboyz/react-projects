@@ -1,6 +1,7 @@
-import PostList from "./components/PostList.jsx";
+import {Outlet} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
-import {PostsContext} from "./store/PostsContext.jsx";
+import PostList from "../components/PostList.jsx";
+import {PostsContext} from "../store/PostsContext.jsx";
 
 const DEFAULT_POSTS = [
   {
@@ -37,6 +38,7 @@ function App() {
 
   return (
     <>
+      <Outlet />
       <main>
         {!isLoading && <PostList />}
         {isLoading && (
