@@ -1,61 +1,69 @@
 import {useContext, useRef} from "react";
+import {Form, Link, redirect, useNavigate} from "react-router-dom";
 import styles from './new-post.module.css'
 import Modal from "../components/Modal.jsx";
-import {Link, useNavigate} from "react-router-dom";
 import {PostsContext} from "../store/PostsContext.jsx";
 
 function NewPost() {
   const nameRef = useRef(null);
   const bodyRef = useRef(null);
-  const navigate = useNavigate();
-  const {setPosts} = useContext(PostsContext);
+  // const {setPosts} = useContext(PostsContext);
+  //
+  // function handleNewPostSubmit(author, content) {
+  //   if (!author || !content) return;
+  //
+  //   setPosts(prevPosts => [{
+  //     author,
+  //     content,
+  //   }, ...prevPosts]);
+  //   navigate('/');
+  // }
 
-  function handleNewPostSubmit(author, content) {
-    if (!author || !content) return;
-    fetch('http://localhost:8080/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        author,
-        content,
-      }),
-    })
-    setPosts(prevPosts => [{
-      author,
-      content,
-    }, ...prevPosts]);
-    navigate('/');
-  }
-
-  function postSubmitHandler(e) {
-    e.preventDefault();
-    if (!nameRef.current || !bodyRef.current) {
-      console.error("missing required fields to create new post");
-      return;
-    }
-    handleNewPostSubmit(nameRef.current.value, bodyRef.current.value);
-  }
 
   return (
     <Modal>
-      <form className={styles.form} onSubmit={postSubmitHandler}>
+      <Form method='post' className={styles.form}>
         <p>
           <label htmlFor="body">Text</label>
-          <textarea id="body" required rows={3} ref={bodyRef} />
+          <textarea
+            style={{
+              resize: "none",
+            }}
+            id="body"
+            name="body"
+            required
+            rows={3}
+            ref={bodyRef} />
         </p>
         <p>
           <label htmlFor="name">Your name</label>
-          <input required type="text" id="name" ref={nameRef} />
+          <input required type="text" name="author" id="name" ref={nameRef} />
         </p>
         <p className={styles.actions}>
           <Link to='/' type='button'>Cancel</Link>
           <button type='submit'>Submit</button>
         </p>
-      </form>
+      </Form>
     </Modal>
   );
 }
 
 export default NewPost;
+
+export async function action({request}) {
+  const formData = await request.formData();
+  const author = formData.get("author");
+  const content = formData.get("body");
+  await fetch('http://localhost:8080/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      author,
+      content,
+    }),
+  });
+
+  return redirect('/');
+}
